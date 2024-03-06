@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-from models import base_model
 import json
 import os
 
@@ -32,4 +31,7 @@ class FileStorage(BaseModel):
         if os.path.exists(self.__file_path):
             with open(self.__file_path, 'r') as file:
                 data = json.load(file)
+                print(data)
+        else:
+            return
         pass

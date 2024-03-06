@@ -10,15 +10,17 @@ class BaseModel:
     """
     def __init__(self, *args, **kwargs):
         """Public instance attributes"""
-        self.id = str(uuid.uuid4())
-        self.created_at = datetime.now()
-        self.updated_at = datetime.now()
-        storage.new(self)
-        for key, value in kwargs.items():
-            if key is not '__class__':
-                if key == 'created_at' or key == 'updated_at':
-                    value = datetime.fromisoformat(value)
-                self.__dict__[key] = value
+        if kwargs is not None and kwargs != {}:
+            for key, value in kwargs.items():
+                if key != '__class__':
+                    if key == 'created_at' or key == 'updated_at':
+                        value = datetime.fromisoformat(value)
+                    self.__dict__[key] = value
+        else:
+            self.id = str(uuid.uuid4())
+            self.created_at = datetime.now()
+            self.updated_at = datetime.now()
+            storage.new(self)
 
     def save(self):
         """
@@ -40,3 +42,17 @@ class BaseModel:
     def __str__(self):
         """Return a string representation"""
         return f"[{self.__class__.__name__}] ({self.id}) {self.__dict__}"
+
+
+all_objs = storage.all()
+print("-- Reloaded objects --")
+for obj_id in all_objs.keys():
+    obj = all_objs[obj_id]
+    print(obj)
+
+print("-- Create a new object --")
+my_model = BaseModel()
+my_model.name = "My_First_Model"
+my_model.my_number = 89
+my_model.save()
+print(my_model)
