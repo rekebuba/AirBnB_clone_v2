@@ -1,20 +1,4 @@
 {
-    "BaseModel.02ee5917-d33c-40c8-8393-974ef6a394d9": {
-        "id": "02ee5917-d33c-40c8-8393-974ef6a394d9",
-        "created_at": "2024-03-07T12:21:56.415700",
-        "updated_at": "2024-03-07T12:21:56.415738",
-        "name": "My_First_Model",
-        "my_number": 89,
-        "__class__": "BaseModel"
-    },
-    "BaseModel.856dd969-23f5-4538-879e-b060c90c5e0e": {
-        "id": "856dd969-23f5-4538-879e-b060c90c5e0e",
-        "created_at": "2024-03-07T12:45:04.245047",
-        "updated_at": "2024-03-07T12:45:04.245081",
-        "name": "My_First_Model",
-        "my_number": 89,
-        "__class__": "BaseModel"
-    },
     "BaseModel.3b22a927-abb9-4d8c-85c9-d837a24ce1b7": {
         "id": "3b22a927-abb9-4d8c-85c9-d837a24ce1b7",
         "created_at": "2024-03-07T12:45:05.758932",
