@@ -92,7 +92,11 @@ class HBNBCommand(cmd.Cmd):
             all_objs = storage.all()
             instance = f"{arg[0]}.{arg[1]}"
             try:
-                print(all_objs[instance])
+                for key, value in all_objs.items():
+                    if instance == key:
+                        types = type(value.to_dict()[arg[2]])
+                        setattr(value, arg[2], types(arg[3][1:len(arg[3]) - 1]))
+                        all_objs[instance].save()
             except KeyError:
                 print("** no instance found **")
 
