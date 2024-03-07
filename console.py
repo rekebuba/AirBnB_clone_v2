@@ -1,6 +1,5 @@
 #!/usr/bin/python3
 import cmd
-from models.base_model import BaseModel 
 
 
 class HBNBCommand(cmd.Cmd):
@@ -17,6 +16,7 @@ class HBNBCommand(cmd.Cmd):
         if not args:
             print("** class name missing **")
         elif args == "BestModel":
+            from models.base_model import BaseModel
             instance = BaseModel()
             instance.save()
             print(instance.id)
@@ -25,12 +25,24 @@ class HBNBCommand(cmd.Cmd):
 
     def do_show(self, args):
         """Prints the string representation of an instance based on the class name and id"""
-        lists = [arg for arg in args.split()]
-        if not lists[0]:
+        arg = args.split()
+        if not arg:
             print("** class name is missing **")
-        elif lists[0] == "BestModel" and lists[1]:
-            ...
-            print(args)
+        elif arg[0] != "BaseModel":
+            print("** class doesn't exist **")
+        elif len(arg) < 2:
+            print("** instance id missing **")
+        else:
+            from models.engine.file_storage import FileStorage
+            storage = FileStorage()
+            storage.reload()
+            all_objs = storage.all()
+            instance = '.'.join(arg)
+            try:
+                print(all_objs[instance])
+            except KeyError:
+                print("** instance id not found **")
+
 
 
 
