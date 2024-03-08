@@ -143,27 +143,29 @@ class HBNBCommand(cmd.Cmd):
         elif len(arg) < 2:
             print("** instance id missing **")
         elif '{' in args:
-            instance = f"{arg[0]}.{arg[1]}"
+            clas_key = f"{arg[0]}.{arg[1]}"
             A = args.index('{')
             B = args.index('}')
             args_dict = eval(args[A:B + 1])
             for key, value in args_dict.items():
-                self.set_attribute(arg[0], instance, key, value)
+                self.set_attribute(arg[0], clas_key, key, value)
         elif len(arg) < 3:
             print("** attribute name missing **")
         elif len(arg) < 4:
             print("** value missing **")
         elif '[' in args:
-            instance = f"{arg[0]}.{arg[1]}"
+            clas_key = f"{arg[0]}.{arg[1]}"
             A = args.index('[')
             B = args.index(']')
             args_dict = eval(args[A:B + 1])
-            self.set_attribute(arg[0], instance, arg[2], args_dict)
+            self.set_attribute(arg[0], clas_key, arg[2], args_dict)
         else:
-            instance = f"{arg[0]}.{arg[1]}"
-            self.set_attribute(arg[0], instance, arg[2], arg[3].replace('"', ''))
+            clas_key = f"{arg[0]}.{arg[1]}"
+            self.set_attribute(arg[0], clas_key, arg[2], arg[3].replace('"', ''))
 
     def set_attribute(self, class_name, id, key, value):
+        """set or update an attribute for the given class
+        with the key and the value"""
         try:
             storage.reload()
             all_objs = storage.all()
