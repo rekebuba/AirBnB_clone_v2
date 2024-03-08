@@ -64,15 +64,15 @@ class HBNBCommand(cmd.Cmd):
         """Prints all string representation of all instances based or not on the class name"""
         storage.reload()
         all_objs = storage.all()
-        arg = args.split()
-        if len(arg) == 1:
-            lists = []
+        lists = []
+        if args and args not in storage.Classes():
+            print("** class doesn't exist **")
+        elif args:
             for key in all_objs.keys():
-                if key[:key.index('.')] == arg[0]:
+                if key[:key.index('.')] == args:
                     lists.append(str(all_objs[key]))
             print(lists)
         else:
-            lists = []
             for key in all_objs.keys():
                 lists.append(str(all_objs[key]))
             print(lists)
@@ -81,15 +81,38 @@ class HBNBCommand(cmd.Cmd):
         # Modify the command or return it unchanged
         modified_line = args
         try:
-            if args[:args.index('.')] in storage.Classes() and args[args.index('.'):] == ".all()":
+            if args[args.index('.'):] == ".all()":
                 modified_line = f"all {args[:args.index('.')]}"
+            elif args[args.index('.'):] == ".count()":
+                modified_line = f"count {args[:args.index('.')]}"
+            elif args[args.index('.'):args.index('(') + 1] == ".show(":
+                char = '"'
+                modified_line = f"show {args[:args.index('.')]} {args[args.index(char) + 1:-2]}"
+            elif args[args.index('.'):args.index('(') + 1] == ".destroy(":
+                char = '"'
+                modified_line = f"destroy {args[:args.index('.')]} {args[args.index(char) + 1:-2]}"
+            elif args[args.index('.'):args.index('(') + 1] == ".update(":
+                char = '"'
+                tokens = args[args.index(char):-1].replace(char, '').split(',')
+                modified_line = f"update {args[:args.index('.')]} {tokens[0]} {tokens[1]} \"{tokens[2].strip()}\""
+                print(modified_line)
         except ValueError:
             pass
         return modified_line
 
+    def do_count(self, args):
+        """prints the number of instances of a class"""
+        count = 0
+        storage.reload()
+        all_obj = storage.all()
+        for key in all_obj.keys():
+            if key[:key.index('.')] == args:
+                count += 1
+        print(count)
     def do_update(self, args):
         """Updates an instance based on the class name and id by adding or updating attribute"""
         arg = args.split()
+        
         if not arg:
             print("** class name is missing **")
         elif arg[0] not in storage.Classes():
