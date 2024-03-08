@@ -105,11 +105,14 @@ class HBNBCommand(cmd.Cmd):
             elif args[args.index('.'):args.index('(') + 1] == ".update(":
                 char = '"'
                 A = args.index('.')
-                B = args.index('{')
                 C = args.index(')')
                 tokens = args[args.index(char):-1].replace(char, '').split(',')
                 if '{' in args:
+                    B = args.index('{')
                     new_line = f"update {args[:A]} {tokens[0]} {args[B:C]}"
+                elif '[' in args:
+                    D = args.index('[')
+                    new_line = f"update {args[:A]} {tokens[0]} {tokens[1]} {args[D:C]}"
                 else:
                     new_line = f"update {args[:A]} {tokens[0]} {tokens[1]} \"{tokens[2].strip()}\""
         except ValueError:
@@ -133,8 +136,6 @@ class HBNBCommand(cmd.Cmd):
         """Updates an instance based on the class name and id by
         adding or updating attribute"""
         arg = args.split()
-        storage.reload()
-        all_objs = storage.all()
         if not arg:
             print("** class name is missing **")
         elif arg[0] not in storage.Classes():
@@ -143,28 +144,34 @@ class HBNBCommand(cmd.Cmd):
             print("** instance id missing **")
         elif '{' in args:
             instance = f"{arg[0]}.{arg[1]}"
-            args_dict = eval(args[args.index('{'):args.index('}') + 1])
-            try:
-                for key, value in args_dict.items():
-                    obj = all_objs[instance]
-                    setattr(obj, key, value)
-                all_objs[instance].save()
-            except KeyError:
-                print("** no instance found **")
-            pass
+            A = args.index('{')
+            B = args.index('}')
+            args_dict = eval(args[A:B + 1])
+            for key, value in args_dict.items():
+                self.set_attribute(arg[0], instance, key, value)
         elif len(arg) < 3:
             print("** attribute name missing **")
         elif len(arg) < 4:
             print("** value missing **")
+        elif '[' in args:
+            instance = f"{arg[0]}.{arg[1]}"
+            A = args.index('[')
+            B = args.index(']')
+            args_dict = eval(args[A:B + 1])
+            self.set_attribute(arg[0], instance, arg[2], args_dict)
         else:
             instance = f"{arg[0]}.{arg[1]}"
-            try:
-                value = all_objs[instance]
-                types = type(value.to_dict()[arg[2]])
-                setattr(value, arg[2], types(arg[3].replace('"', '')))
-                all_objs[instance].save()
-            except KeyError:
-                print("** no instance found **")
+            self.set_attribute(arg[0], instance, arg[2], arg[3].replace('"', ''))
+
+    def set_attribute(self, class_name, id, key, value):
+        try:
+            storage.reload()
+            all_objs = storage.all()
+            types = storage.Types()[class_name][key]
+            setattr(all_objs[id], key, types(value))
+            all_objs[id].save()
+        except KeyError:
+            print("** no instance found **")
 
 
 if __name__ == '__main__':

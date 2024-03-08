@@ -22,8 +22,7 @@ class FileStorage:
     def save(self):
         """serializes __objects to the JSON file (path: __file_path)"""
         with open(self.__file_path, 'w') as file:
-            for key, value in self.__objects.items():
-                data = {key: value.to_dict()}
+            data = {key: value.to_dict() for key, value in self.__objects.items()}
             json.dump(data, file, indent=4)
 
     def Classes(self):
@@ -46,6 +45,50 @@ class FileStorage:
             "State": State
         }
         return classes
+
+    def Types(self):
+        """Classes attribute and their types"""
+        types = {
+            "BaseModel": {
+                "id": str,
+                "first_name": str
+            },
+            "User": {
+                "email": str,
+                "password": str,
+                "first_name": str,
+                "last_name": str
+            },
+            "State": {
+                "name": str
+            },
+            "City": {
+                "state_id": str,
+                "name": str
+            },
+            "Amenity": {
+                "name": str
+            },
+            "Place": {
+                "city_id": str,
+                "user_id": str,
+                "name": str,
+                "description": str,
+                "number_rooms": int,
+                "number_bathrooms": int,
+                "max_guest": int,
+                "price_by_night": int,
+                "latitude": float,
+                "longitude": float,
+                "amenity_ids": list
+            },
+            "Review": {
+                "place_id": str,
+                "user_id": str,
+                "text": str
+            }
+        }
+        return types
 
     def reload(self):
         """deserializes the JSON file to __objects
