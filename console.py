@@ -94,8 +94,10 @@ class HBNBCommand(cmd.Cmd):
             elif args[args.index('.'):args.index('(') + 1] == ".update(":
                 char = '"'
                 tokens = args[args.index(char):-1].replace(char, '').split(',')
-                modified_line = f"update {args[:args.index('.')]} {tokens[0]} {tokens[1]} \"{tokens[2].strip()}\""
-                print(modified_line)
+                if '{' in args:
+                    modified_line = f"update {args[:args.index('.')]} {tokens[0]} {args[args.index('{'):args.index(')')]}"
+                else:
+                    modified_line = f"update {args[:args.index('.')]} {tokens[0]} {tokens[1]} \"{tokens[2].strip()}\""
         except ValueError:
             pass
         return modified_line
@@ -112,7 +114,6 @@ class HBNBCommand(cmd.Cmd):
     def do_update(self, args):
         """Updates an instance based on the class name and id by adding or updating attribute"""
         arg = args.split()
-        
         if not arg:
             print("** class name is missing **")
         elif arg[0] not in storage.Classes():
