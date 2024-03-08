@@ -62,9 +62,9 @@ class HBNBCommand(cmd.Cmd):
 
     def do_all(self, args):
         """Prints all string representation of all instances based or not on the class name"""
-        arg = args.split()
         storage.reload()
         all_objs = storage.all()
+        arg = args.split()
         if len(arg) == 1:
             lists = []
             for key in all_objs.keys():
@@ -76,6 +76,16 @@ class HBNBCommand(cmd.Cmd):
             for key in all_objs.keys():
                 lists.append(str(all_objs[key]))
             print(lists)
+
+    def precmd(self, args):
+        # Modify the command or return it unchanged
+        modified_line = args
+        try:
+            if args[:args.index('.')] in storage.Classes() and args[args.index('.'):] == ".all()":
+                modified_line = f"all {args[:args.index('.')]}"
+        except ValueError:
+            pass
+        return modified_line
 
     def do_update(self, args):
         """Updates an instance based on the class name and id by adding or updating attribute"""
