@@ -1,57 +1,8 @@
 {
-    "BaseModel.fd5111b5-89a2-451d-aafd-7ffe58beca82": {
-        "id": "fd5111b5-89a2-451d-aafd-7ffe58beca82",
-        "created_at": "2024-03-08T14:40:52.209254",
-        "updated_at": "2024-03-08T14:40:52.209466",
-        "__class__": "BaseModel"
-    },
-    "BaseModel.5fdd3b74-c5fc-43f7-a0c3-daae6ee613ac": {
-        "id": "5fdd3b74-c5fc-43f7-a0c3-daae6ee613ac",
-        "created_at": "2024-03-08T14:40:58.734301",
-        "updated_at": "2024-03-08T14:40:58.734322",
-        "__class__": "BaseModel"
-    },
-    "BaseModel.44b3d7e4-f644-42e0-8461-8e9124754464": {
-        "id": "44b3d7e4-f644-42e0-8461-8e9124754464",
-        "created_at": "2024-03-08T14:40:59.174381",
-        "updated_at": "2024-03-08T14:40:59.174399",
-        "__class__": "BaseModel"
-    },
-    "BaseModel.d836aedc-2ed7-4873-9a48-26b3749d51a6": {
-        "id": "d836aedc-2ed7-4873-9a48-26b3749d51a6",
-        "created_at": "2024-03-08T14:40:59.599321",
-        "updated_at": "2024-03-08T14:40:59.599340",
-        "__class__": "BaseModel"
-    },
-    "BaseModel.7348c7fe-6ef4-46f3-92f1-2bde835ed07e": {
-        "id": "7348c7fe-6ef4-46f3-92f1-2bde835ed07e",
-        "created_at": "2024-03-08T14:41:00.835374",
-        "updated_at": "2024-03-08T14:41:00.835399",
-        "__class__": "BaseModel"
-    },
-    "User.f40b8e3b-ab43-4a35-ae07-629275546c1e": {
-        "id": "f40b8e3b-ab43-4a35-ae07-629275546c1e",
-        "created_at": "2024-03-08T16:06:15.271315",
-        "updated_at": "2024-03-08T16:06:15.271582",
-        "__class__": "User"
-    },
-    "User.c878b48b-7944-4df1-8de1-a35c25f2885e": {
-        "id": "c878b48b-7944-4df1-8de1-a35c25f2885e",
-        "created_at": "2024-03-08T16:08:05.471372",
-        "updated_at": "2024-03-08T16:52:01.474688",
-        "first_name": "Betty",
-        "last_name": "Bar",
-        "email": "airbnb@mail.com",
-        "password": "abc",
-        "__class__": "User"
-    },
-    "User.4596bc79-3816-41da-9a4d-b53891d66305": {
-        "id": "4596bc79-3816-41da-9a4d-b53891d66305",
-        "created_at": "2024-03-08T16:08:05.475443",
-        "updated_at": "2024-03-08T18:29:44.863867",
-        "first_name": "John",
-        "email": "abukiabdullahi1@gmail.com",
-        "password": "root",
-        "__class__": "User"
+    "Review.41328044-0635-43d5-b520-d5011dbc791e": {
+        "id": "41328044-0635-43d5-b520-d5011dbc791e",
+        "created_at": "2024-03-08T19:27:44.463101",
+        "updated_at": "2024-03-08T19:27:44.463127",
+        "__class__": "Review"
     }
 }

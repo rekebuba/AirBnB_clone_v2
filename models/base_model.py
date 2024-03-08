@@ -5,9 +5,7 @@ import uuid
 
 
 class BaseModel:
-    """
-    defines all common attributes/methods for other classes
-    """
+    """defines all common attributes/methods for other classes"""
     def __init__(self, *args, **kwargs):
         """Public instance attributes"""
         if kwargs is not None and kwargs != {}:
@@ -23,12 +21,11 @@ class BaseModel:
             storage.new(self)
 
     def save(self):
-        """
-        updates the public instance attribute updated_at with the current datetime
-        """
+        """updates the public instance attribute updated_at
+        with the current datetime"""
         self.updated_at = datetime.now()
         storage.save()
-    
+
     def to_dict(self):
         """
         returns a dictionary containing all key/values of __dict__ of datetime
@@ -38,7 +35,7 @@ class BaseModel:
         obj_dict['updated_at'] = self.updated_at.isoformat()
         obj_dict['created_at'] = self.created_at.isoformat()
         return obj_dict
-    
+
     def __str__(self):
         """Return a string representation"""
         return f"[{self.__class__.__name__}] ({self.id}) {self.__dict__}"

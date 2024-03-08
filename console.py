@@ -1,17 +1,22 @@
 #!/usr/bin/python3
+"""A module that contains the entry point of the command interpreter"""
 import cmd
 from models import storage
 from models.base_model import BaseModel
+
 
 class HBNBCommand(cmd.Cmd):
     prompt = '(hbnb) '
 
     def do_EOF(self, args):
         """Used to exit the program"""
+        print()
         return True
+
     def do_quit(self, args):
         """Used to exit the program"""
         return True
+
     def do_create(self, args):
         """Creates a new instance of BaseModel"""
         if not args:
@@ -24,7 +29,8 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
 
     def do_show(self, args):
-        """Prints the string representation of an instance based on the class name and id"""
+        """Prints the string representation of an instance
+        based on the class name and id"""
         arg = args.split()
         if not arg:
             print("** class name is missing **")
@@ -61,7 +67,8 @@ class HBNBCommand(cmd.Cmd):
                 print("** no instance found **")
 
     def do_all(self, args):
-        """Prints all string representation of all instances based or not on the class name"""
+        """Prints all string representation of all instances
+        based or not on the class name"""
         storage.reload()
         all_objs = storage.all()
         lists = []
@@ -78,41 +85,53 @@ class HBNBCommand(cmd.Cmd):
             print(lists)
 
     def precmd(self, args):
-        # Modify the command or return it unchanged
-        modified_line = args
+        """Modify the command or return it unchanged"""
+        new_line = args
         try:
             if args[args.index('.'):] == ".all()":
-                modified_line = f"all {args[:args.index('.')]}"
+                new_line = f"all {args[:args.index('.')]}"
             elif args[args.index('.'):] == ".count()":
-                modified_line = f"count {args[:args.index('.')]}"
+                new_line = f"count {args[:args.index('.')]}"
             elif args[args.index('.'):args.index('(') + 1] == ".show(":
                 char = '"'
-                modified_line = f"show {args[:args.index('.')]} {args[args.index(char) + 1:-2]}"
+                A = args.index('.')
+                B = args.index(char)
+                new_line = f"show {args[:A]} {args[B + 1:-2]}"
             elif args[args.index('.'):args.index('(') + 1] == ".destroy(":
                 char = '"'
-                modified_line = f"destroy {args[:args.index('.')]} {args[args.index(char) + 1:-2]}"
+                A = args.index('.')
+                B = args.index(char)
+                new_line = f"destroy {args[:A]} {args[B + 1:-2]}"
             elif args[args.index('.'):args.index('(') + 1] == ".update(":
                 char = '"'
+                A = args.index('.')
+                B = args.index('{')
+                C = args.index(')')
                 tokens = args[args.index(char):-1].replace(char, '').split(',')
                 if '{' in args:
-                    modified_line = f"update {args[:args.index('.')]} {tokens[0]} {args[args.index('{'):args.index(')')]}"
+                    new_line = f"update {args[:A]} {tokens[0]} {args[B:C]}"
                 else:
-                    modified_line = f"update {args[:args.index('.')]} {tokens[0]} {tokens[1]} \"{tokens[2].strip()}\""
+                    new_line = f"update {args[:A]} {tokens[0]} {tokens[1]} \"{tokens[2].strip()}\""
         except ValueError:
             pass
-        return modified_line
+        return new_line
 
     def do_count(self, args):
         """prints the number of instances of a class"""
         count = 0
         storage.reload()
         all_obj = storage.all()
-        for key in all_obj.keys():
-            if key[:key.index('.')] == args:
-                count += 1
-        print(count)
+        if args not in storage.Classes():
+            print("** class doesn't exist **")
+        else:
+            for key in all_obj.keys():
+                if key[:key.index('.')] == args:
+                    count += 1
+            print(count)
+
     def do_update(self, args):
-        """Updates an instance based on the class name and id by adding or updating attribute"""
+        """Updates an instance based on the class name and id by
+        adding or updating attribute"""
         arg = args.split()
         storage.reload()
         all_objs = storage.all()
@@ -146,7 +165,6 @@ class HBNBCommand(cmd.Cmd):
                 all_objs[instance].save()
             except KeyError:
                 print("** no instance found **")
-
 
 
 if __name__ == '__main__':

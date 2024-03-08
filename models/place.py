@@ -1,7 +1,10 @@
 #!/usr/bin/python3
+"""Place Class"""
 from models.base_model import BaseModel
 
+
 class Place(BaseModel):
+    """Class for managing Place objects"""
     city_id = ""
     user_id = ""
     name = ""

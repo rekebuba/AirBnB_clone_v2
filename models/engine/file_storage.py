@@ -2,6 +2,7 @@
 import json
 import os
 
+
 class FileStorage:
     """
     A class that serializes instances to a JSON file
@@ -21,10 +22,12 @@ class FileStorage:
     def save(self):
         """serializes __objects to the JSON file (path: __file_path)"""
         with open(self.__file_path, 'w') as file:
-            data = {key: value.to_dict() for key, value in self.__objects.items()}
+            for key, value in self.__objects.items():
+                data = {key: value.to_dict()}
             json.dump(data, file, indent=4)
 
     def Classes(self):
+        """All the classes that are available in one dictionary"""
         from models.base_model import BaseModel
         from models.user import User
         from models.amenity import Amenity
@@ -45,9 +48,11 @@ class FileStorage:
         return classes
 
     def reload(self):
-        """deserializes the JSON file to __objects (only if the JSON file (__file_path) exists"""
+        """deserializes the JSON file to __objects
+        (only if the JSON file (__file_path) exists"""
         if os.path.exists(self.__file_path):
             with open(self.__file_path, 'r') as file:
                 data = json.load(file)
                 for key, value in data.items():
-                    self.__objects[key] = self.Classes()[key[:key.index('.')]](**value)
+                    A = key.index('.')
+                    self.__objects[key] = self.Classes()[key[:A]](**value)
