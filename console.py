@@ -66,13 +66,17 @@ class HBNBCommand(cmd.Cmd):
         storage.reload()
         all_objs = storage.all()
         if len(arg) == 1:
-            pass
+            lists = []
+            for key in all_objs.keys():
+                if key[:key.index('.')] == arg[0]:
+                    lists.append(str(all_objs[key]))
+            print(lists)
         else:
             lists = []
             for key in all_objs.keys():
                 lists.append(str(all_objs[key]))
             print(lists)
-    
+
     def do_update(self, args):
         """Updates an instance based on the class name and id by adding or updating attribute"""
         arg = args.split()
