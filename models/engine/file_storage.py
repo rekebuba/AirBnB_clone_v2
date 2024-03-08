@@ -24,11 +24,19 @@ class FileStorage:
             data = {key: value.to_dict() for key, value in self.__objects.items()}
             json.dump(data, file, indent=4)
 
+    def Classes(self):
+        from models.base_model import BaseModel
+        from models.user import User
+        classes = {
+            "BaseModel": BaseModel,
+            "User": User
+        }
+        return classes
+
     def reload(self):
         """deserializes the JSON file to __objects (only if the JSON file (__file_path) exists"""
         if os.path.exists(self.__file_path):
             with open(self.__file_path, 'r') as file:
                 data = json.load(file)
-                from models.base_model import BaseModel
                 for key, value in data.items():
-                    self.__objects[key] = BaseModel(**value)
+                    self.__objects[key] = self.Classes()[key[:key.index('.')]](**value)

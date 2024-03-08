@@ -16,9 +16,8 @@ class HBNBCommand(cmd.Cmd):
         """Creates a new instance of BaseModel"""
         if not args:
             print("** class name missing **")
-        elif args == "BestModel":
-
-            instance = BaseModel()
+        elif args in storage.Classes():
+            instance = storage.Classes()[args]()
             instance.save()
             print(instance.id)
         else:
@@ -29,7 +28,7 @@ class HBNBCommand(cmd.Cmd):
         arg = args.split()
         if not arg:
             print("** class name is missing **")
-        elif arg[0] != "BaseModel":
+        elif arg[0] not in storage.Classes():
             print("** class doesn't exist **")
         elif len(arg) < 2:
             print("** instance id missing **")
@@ -47,7 +46,7 @@ class HBNBCommand(cmd.Cmd):
         arg = args.split()
         if not arg:
             print("** class name is missing **")
-        elif arg[0] != "BaseModel":
+        elif arg[0] not in storage.Classes():
             print("** class doesn't exist **")
         elif len(arg) < 2:
             print("** instance id missing **")
@@ -79,7 +78,7 @@ class HBNBCommand(cmd.Cmd):
         arg = args.split()
         if not arg:
             print("** class name is missing **")
-        elif arg[0] != "BaseModel":
+        elif arg[0] not in storage.Classes():
             print("** class doesn't exist **")
         elif len(arg) < 2:
             print("** instance id missing **")
