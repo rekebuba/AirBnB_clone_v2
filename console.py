@@ -2,6 +2,7 @@
 """A module that contains the entry point of the command interpreter"""
 
 import cmd
+import re
 from models import storage
 from models.base_model import BaseModel
 
@@ -20,19 +21,19 @@ class HBNBCommand(cmd.Cmd):
         return True
 
     def emptyline(self):
-        """emptyline should not execute anything""" 
+        """emptyline should not execute anything"""
         pass
 
     def do_create(self, args):
         """Creates a new instance of BaseModel"""
         if not args:
             print("** class name missing **")
-        elif args in storage.Classes():
+        elif args not in storage.Classes():
+            print("** class doesn't exist **")
+        else:
             instance = storage.Classes()[args]()
             instance.save()
             print(instance.id)
-        else:
-            print("** class doesn't exist **")
 
     def do_show(self, args):
         """Prints the string representation of an instance
@@ -90,35 +91,30 @@ class HBNBCommand(cmd.Cmd):
                 lists.append(str(all_objs[key]))
             print(lists)
 
-    def precmd(self, args):
+    def precmd(self, line):
         """Modify the command or return it unchanged"""
-        new_line = args
+        new_line = line
         try:
+            match = re.search(r"^(\w*)\.(\w+)(?:\(([^)]*)\))$", line)
+            clas_name = match.group(1)
+            method = match.group(2)
+            args = match.group(3)
             char = '"'
-            A = args.index('.')
-            B = args.index('(')
-            C = args.index(')')
-            if args[A:] == ".all()":
-                new_line = f"all {args[:A]}"
-            elif args[A:] == ".count()":
-                new_line = f"count {args[:A]}"
-            elif args[A:B] == ".show":
-                args = args.replace(char, '')
-                new_line = f"show {args[:A]} {args[B + 1:C]}"
-            elif args[A:B] == ".destroy":
-                args = args.replace(char, '')
-                new_line = f"destroy {args[:A]} {args[B + 1:C]}"
-            elif args[A:B] == ".update":
-                tokens = args[args.index(char):C].replace(char, '').split(',')
-                if '{' in args:
-                    B = args.index('{')
-                    new_line = f"update {args[:A]} {tokens[0]} {args[B:C]}"
-                elif '[' in args:
-                    D = args.index('[')
-                    new_line = f"update {args[:A]} {tokens[0]} {tokens[1]} {args[D:C]}"
+            if method in ["all", "count"]:
+                new_line = f"{method} {clas_name}"
+            elif method in ["show", "destroy"]:
+                new_line = f"{method} {clas_name} {args.replace(char, '')}"
+            elif method == "update":
+                arg = re.search(r"^(?:\"([^\"]*))\", (?=\"(\w*)\", (.*))?(.*)", args)
+                id = arg.group(1)
+                attribute = arg.group(2)
+                value = arg.group(3)
+                dicts = arg.group(4)
+                if type(eval(dicts)) is dict:
+                    new_line = f"{method} {clas_name} {id} {dicts}"
                 else:
-                    new_line = f"update {args[:A]} {tokens[0]} {tokens[1]} \"{tokens[2].strip()}\""
-        except ValueError:
+                    new_line = f"{method} {clas_name} {id} {attribute} {value}"
+        except (ValueError, AttributeError):
             pass
         return new_line
 
@@ -135,36 +131,33 @@ class HBNBCommand(cmd.Cmd):
                     count += 1
             print(count)
 
-    def do_update(self, args):
+    def do_update(self, line):
         """Updates an instance based on the class name and id by
         adding or updating attribute"""
-        arg = args.split()
-        if not arg:
+        match = re.search(r"^(\w+)\s+([^ ]*)\s+(\w+)? ?(.*)$", line)
+        clas_name = match.group(1)
+        id = match.group(2)
+        attribute = match.group(3)
+        value = match.group(4)
+        if clas_name is None:
             print("** class name is missing **")
-        elif arg[0] not in storage.Classes():
+        elif clas_name not in storage.Classes():
             print("** class doesn't exist **")
-        elif len(arg) < 2:
+        elif id is None:
             print("** instance id missing **")
-        elif '{' in args:
-            clas_key = f"{arg[0]}.{arg[1]}"
-            A = args.index('{')
-            B = args.index('}')
-            args_dict = eval(args[A:B + 1])
-            for key, value in args_dict.items():
-                self.set_attribute(arg[0], clas_key, key, value)
-        elif len(arg) < 3:
+        elif type(eval(value) is dict):
+            clas_key = f"{clas_name}.{id}"
+            value_dict = eval(value)
+            for k, v in value_dict.items():
+                self.set_attribute(clas_name, clas_key, k, v)
+        elif attribute is None:
             print("** attribute name missing **")
-        elif len(arg) < 4:
+        elif value is None:
             print("** value missing **")
-        elif '[' in args:
-            clas_key = f"{arg[0]}.{arg[1]}"
-            A = args.index('[')
-            B = args.index(']')
-            args_dict = eval(args[A:B + 1])
-            self.set_attribute(arg[0], clas_key, arg[2], args_dict)
         else:
-            clas_key = f"{arg[0]}.{arg[1]}"
-            self.set_attribute(arg[0], clas_key, arg[2], arg[3].replace('"', ''))
+            clas_key = f"{clas_name}.{id}"
+            value = eval(value)
+            self.set_attribute(clas_name, clas_key, attribute, value)
 
     def set_attribute(self, class_name, id, key, value):
         """set or update an attribute for the given class
@@ -172,8 +165,7 @@ class HBNBCommand(cmd.Cmd):
         try:
             storage.reload()
             all_objs = storage.all()
-            types = storage.Types()[class_name][key]
-            setattr(all_objs[id], key, types(value))
+            setattr(all_objs[id], key, value)
             all_objs[id].save()
         except KeyError:
             print("** no instance found **")
