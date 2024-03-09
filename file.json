@@ -31,25 +31,27 @@
         "Number": "100",
         "__class__": "BaseModel"
     },
-    "Amenity.c16c52ce-6962-4de5-a263-f71683a5a91f": {
-        "id": "c16c52ce-6962-4de5-a263-f71683a5a91f",
-        "created_at": "2024-03-08T20:28:24.159465",
-        "updated_at": "2024-03-08T20:28:24.159487",
-        "__class__": "Amenity"
-    },
     "Place.0e856f42-f49c-427a-8b6d-11d7396e63fd": {
         "id": "0e856f42-f49c-427a-8b6d-11d7396e63fd",
         "created_at": "2024-03-08T20:29:30.866260",
-        "updated_at": "2024-03-09T00:12:59.776359",
+        "updated_at": "2024-03-09T13:03:28.599342",
         "max_guest": 100,
         "description": "words",
         "number_bathrooms": 40,
         "latitude": 89.0,
         "amenity_ids": [
-            "ABC",
-            "EFG",
-            "HIJ"
+            "123",
+            "56",
+            "89"
         ],
         "__class__": "Place"
+    },
+    "BaseModel.5da5a36a-2250-4f0a-a65f-88c95a280dd8": {
+        "id": "5da5a36a-2250-4f0a-a65f-88c95a280dd8",
+        "created_at": "2024-03-09T12:49:00.672906",
+        "updated_at": "2024-03-09T12:49:00.672983",
+        "name": "My First Model",
+        "my_number": 89,
+        "__class__": "BaseModel"
     }
 }

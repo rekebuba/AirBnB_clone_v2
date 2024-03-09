@@ -88,24 +88,21 @@ class HBNBCommand(cmd.Cmd):
         """Modify the command or return it unchanged"""
         new_line = args
         try:
-            if args[args.index('.'):] == ".all()":
-                new_line = f"all {args[:args.index('.')]}"
-            elif args[args.index('.'):] == ".count()":
-                new_line = f"count {args[:args.index('.')]}"
-            elif args[args.index('.'):args.index('(') + 1] == ".show(":
-                char = '"'
-                A = args.index('.')
-                B = args.index(char)
-                new_line = f"show {args[:A]} {args[B + 1:-2]}"
-            elif args[args.index('.'):args.index('(') + 1] == ".destroy(":
-                char = '"'
-                A = args.index('.')
-                B = args.index(char)
-                new_line = f"destroy {args[:A]} {args[B + 1:-2]}"
-            elif args[args.index('.'):args.index('(') + 1] == ".update(":
-                char = '"'
-                A = args.index('.')
-                C = args.index(')')
+            char = '"'
+            A = args.index('.')
+            B = args.index('(')
+            C = args.index(')')
+            if args[A:] == ".all()":
+                new_line = f"all {args[:A]}"
+            elif args[A:] == ".count()":
+                new_line = f"count {args[:A]}"
+            elif args[A:B] == ".show":
+                args = args.replace(char, '')
+                new_line = f"show {args[:A]} {args[B + 1:C]}"
+            elif args[A:B] == ".destroy":
+                args = args.replace(char, '')
+                new_line = f"destroy {args[:A]} {args[B + 1:C]}"
+            elif args[A:B] == ".update":
                 tokens = args[args.index(char):-1].replace(char, '').split(',')
                 if '{' in args:
                     B = args.index('{')
