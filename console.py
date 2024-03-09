@@ -145,7 +145,7 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
         elif id is None:
             print("** instance id missing **")
-        elif type(eval(value) is dict):
+        elif type(eval(value)) is dict:
             clas_key = f"{clas_name}.{id}"
             value_dict = eval(value)
             for k, v in value_dict.items():
