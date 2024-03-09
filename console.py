@@ -17,6 +17,10 @@ class HBNBCommand(cmd.Cmd):
         """Used to exit the program"""
         return True
 
+    def emptyline(self):
+        """emptyline should not execute anything""" 
+        pass
+
     def do_create(self, args):
         """Creates a new instance of BaseModel"""
         if not args:
