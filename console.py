@@ -105,7 +105,8 @@ class HBNBCommand(cmd.Cmd):
             elif method in ["show", "destroy"]:
                 new_line = f"{method} {clas_name} {args.replace(char, '')}"
             elif method == "update":
-                arg = re.search(r"^(?:\"([^\"]*))\", (?=\"(\w*)\", (.*))?(.*)", args)
+                arg = re.search(r"^(?:\"([^\"]*))\", (?=\"(\w*)\", (.*))?(.*)",
+                                args)
                 id = arg.group(1)
                 attribute = arg.group(2)
                 value = arg.group(3)
