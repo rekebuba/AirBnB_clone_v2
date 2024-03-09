@@ -1,11 +1,13 @@
 #!/usr/bin/python3
 """A module that contains the entry point of the command interpreter"""
+
 import cmd
 from models import storage
 from models.base_model import BaseModel
 
 
 class HBNBCommand(cmd.Cmd):
+    """Command line program"""
     prompt = '(hbnb) '
 
     def do_EOF(self, args):
