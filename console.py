@@ -103,7 +103,7 @@ class HBNBCommand(cmd.Cmd):
                 args = args.replace(char, '')
                 new_line = f"destroy {args[:A]} {args[B + 1:C]}"
             elif args[A:B] == ".update":
-                tokens = args[args.index(char):-1].replace(char, '').split(',')
+                tokens = args[args.index(char):C].replace(char, '').split(',')
                 if '{' in args:
                     B = args.index('{')
                     new_line = f"update {args[:A]} {tokens[0]} {args[B:C]}"
