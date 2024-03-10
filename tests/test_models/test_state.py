@@ -24,3 +24,9 @@ class TestFileStorage(unittest.TestCase):
         """Tears down test methods."""
         self.resetStorage()
         pass
+
+def resetStorage(self):
+        """Resets state data."""
+        FileStorage._FileStorage__objects = {}
+        if os.path.isfile(FileStorage._FileStorage__file_path):
+            os.remove(FileStorage._FileStorage__file_path)
