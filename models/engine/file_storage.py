@@ -1,4 +1,6 @@
 #!/usr/bin/python3
+"""module for File storage"""
+
 import json
 import os
 

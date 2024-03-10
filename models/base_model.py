@@ -1,4 +1,6 @@
 #!/usr/bin/python3
+"""Module for Base_model"""
+
 from models import storage
 from datetime import datetime
 import uuid
