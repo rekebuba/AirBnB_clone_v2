@@ -1,11 +1,11 @@
 #!/usr/bin/python3
-"""Unittest module for the user class."""
+"""Unittest module for the City class."""
 
 import unittest
 from datetime import datetime
 import time
 from models.base_model import BaseModel
-from models.user import User
+from models.city import City
 from models.engine.file_storage import FileStorage
 from models import storage
 import re
@@ -14,7 +14,7 @@ import os
 
 
 class TestFileStorage(unittest.TestCase):
-    """Test cases for user class"""
+    """Test cases for City class"""
 
     def setUp(self):
         """Sets up test methods."""
