@@ -38,3 +38,6 @@ class TestFileStorage(unittest.TestCase):
         dicts = storage.all()
         self.assertTrue(dicts[formats])
 
+
+if __name__ == "__main__":
+    unittest.main()

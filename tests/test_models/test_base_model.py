@@ -43,7 +43,8 @@ class TestBaseModel(unittest.TestCase):
         self.resetStorage()
         with self.assertRaises(TypeError) as e:
             BaseModel.__init__()
-        msg = "BaseModel.__init__() missing 1 required positional argument: 'self'"
+        msg = "BaseModel.__init__() missing 1 required positional argument: \
+'self'"
         self.assertEqual(str(e.exception), msg)
 
     def test_3_init_many_args(self):
@@ -113,7 +114,8 @@ class TestBaseModel(unittest.TestCase):
         self.resetStorage()
         with self.assertRaises(TypeError) as e:
             BaseModel.to_dict()
-        msg = "BaseModel.to_dict() missing 1 required positional argument: 'self'"
+        msg = "BaseModel.to_dict() missing 1 required positional argument: \
+'self'"
         self.assertEqual(str(e.exception), msg)
 
     def test_3_to_dict_excess_args(self):
@@ -121,7 +123,8 @@ class TestBaseModel(unittest.TestCase):
         self.resetStorage()
         with self.assertRaises(TypeError) as e:
             BaseModel.to_dict(self, 98)
-        msg = "BaseModel.to_dict() takes 1 positional argument but 2 were given"
+        msg = "BaseModel.to_dict() takes 1 positional argument but 2 were \
+given"
         self.assertEqual(str(e.exception), msg)
 
     def test_4_instantiation(self):
@@ -157,8 +160,7 @@ class TestBaseModel(unittest.TestCase):
         key = "{}.{}".format(type(b).__name__, b.id)
         d = {key: b.to_dict()}
         self.assertTrue(os.path.isfile(FileStorage._FileStorage__file_path))
-        with open(FileStorage._FileStorage__file_path,
-                    "r", encoding="utf-8") as f:
+        with open(FileStorage._FileStorage__file_path, "r") as f:
             self.assertEqual(len(json.dumps(d, indent=4)), len(f.read()))
             f.seek(0)
             self.assertEqual(json.load(f), d)

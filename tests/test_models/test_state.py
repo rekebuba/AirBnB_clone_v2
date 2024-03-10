@@ -2,14 +2,9 @@
 """Unittest module for the state class."""
 
 import unittest
-from datetime import datetime
-import time
 from models.base_model import BaseModel
 from models.state import State
 from models.engine.file_storage import FileStorage
-from models import storage
-import re
-import json
 import os
 
 
@@ -25,8 +20,19 @@ class TestFileStorage(unittest.TestCase):
         self.resetStorage()
         pass
 
-def resetStorage(self):
+    def resetStorage(self):
         """Resets state data."""
         FileStorage._FileStorage__objects = {}
         if os.path.isfile(FileStorage._FileStorage__file_path):
             os.remove(FileStorage._FileStorage__file_path)
+
+    def test_instantiation(self):
+        """Tests instantiation of State class."""
+        b = State()
+        self.assertEqual(str(type(b)), "<class 'models.state.State'>")
+        self.assertIsInstance(b, State)
+        self.assertTrue(issubclass(type(b), BaseModel))
+
+
+if __name__ == "__main__":
+    unittest.main()
