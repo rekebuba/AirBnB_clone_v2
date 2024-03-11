@@ -71,7 +71,7 @@ EOF  all  count  create  destroy  help  quit  show  update
         """tests the show command whit out class name"""
         with patch('sys.stdout', new=StringIO()) as f:
             HBNBCommand().onecmd("show")
-            output = "** class name is missing **\n"
+            output = "** class name missing **\n"
             self.assertEqual(output, f.getvalue())
 
     def test_show_2(self):
@@ -106,7 +106,7 @@ EOF  all  count  create  destroy  help  quit  show  update
         """tests the show command whit out class name"""
         with patch('sys.stdout', new=StringIO()) as f:
             HBNBCommand().onecmd("destroy")
-            output = "** class name is missing **\n"
+            output = "** class name missing **\n"
             self.assertEqual(output, f.getvalue())
 
     def test_destroy_2(self):

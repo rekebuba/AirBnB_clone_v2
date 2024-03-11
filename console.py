@@ -28,10 +28,10 @@ class HBNBCommand(cmd.Cmd):
         """Creates a new instance of BaseModel"""
         if not args:
             print("** class name missing **")
-        elif args not in storage.Classes():
+        elif args not in storage.classes():
             print("** class doesn't exist **")
         else:
-            instance = storage.Classes()[args]()
+            instance = storage.classes()[args]()
             instance.save()
             print(instance.id)
 
@@ -39,9 +39,9 @@ class HBNBCommand(cmd.Cmd):
         """Prints the string representation of an instance
         based on the class name and id"""
         arg = args.split()
-        if not arg:
-            print("** class name is missing **")
-        elif arg[0] not in storage.Classes():
+        if args == "" or args is None:
+            print("** class name missing **")
+        elif arg[0] not in storage.classes():
             print("** class doesn't exist **")
         elif len(arg) < 2:
             print("** instance id missing **")
@@ -58,8 +58,8 @@ class HBNBCommand(cmd.Cmd):
         """Deletes an instance based on the class name and id"""
         arg = args.split()
         if not arg:
-            print("** class name is missing **")
-        elif arg[0] not in storage.Classes():
+            print("** class name missing **")
+        elif arg[0] not in storage.classes():
             print("** class doesn't exist **")
         elif len(arg) < 2:
             print("** instance id missing **")
@@ -79,7 +79,7 @@ class HBNBCommand(cmd.Cmd):
         storage.reload()
         all_objs = storage.all()
         lists = []
-        if args and args not in storage.Classes():
+        if args and args not in storage.classes():
             print("** class doesn't exist **")
         elif args:
             for key in all_objs.keys():
@@ -91,7 +91,11 @@ class HBNBCommand(cmd.Cmd):
                 lists.append(str(all_objs[key]))
             print(lists)
 
-    def precmd(self, line):
+    def default(self, line):
+        """default value if nothing matches"""
+        self._precmd(line)
+
+    def _precmd(self, line):
         """Modify the command or return it unchanged"""
         new_line = line
         try:
@@ -105,18 +109,23 @@ class HBNBCommand(cmd.Cmd):
             elif method in ["show", "destroy"]:
                 new_line = f"{method} {clas_name} {args.replace(char, '')}"
             elif method == "update":
-                arg = re.search(r"^(?:\"([^\"]*))\", (?=\"(\w*)\", (.*))?(.*)",
-                                args)
-                id = arg.group(1)
-                attribute = arg.group(2)
-                value = arg.group(3)
-                dicts = arg.group(4)
-                if type(eval(dicts)) is dict:
-                    new_line = f"{method} {clas_name} {id} {dicts}"
+                arg = re.search(r"^\"?([^\"]*)\"?,? ?(\"\w*\
+                    \")?(?:, ([^\{].*))?(.*)?$", args)
+                if clas_name == '' or clas_name is None:
+                    new_line = f"{method} {clas_name}"
                 else:
-                    new_line = f"{method} {clas_name} {id} {attribute} {value}"
-        except (ValueError, AttributeError):
-            pass
+                    id = arg.group(1)
+                    attribute = arg.group(2)
+                    value = arg.group(3)
+                    dicts = arg.group(4)
+                    if dicts != '' and dicts is not None:
+                        new_line = f"{method} {clas_name} {id} {dicts}"
+                    else:
+                        new_line = f"{method} {clas_name} {id} {attribute} \
+                            {value}"
+        except Exception:
+            return line
+        self.onecmd(new_line)
         return new_line
 
     def do_count(self, args):
@@ -124,7 +133,9 @@ class HBNBCommand(cmd.Cmd):
         count = 0
         storage.reload()
         all_obj = storage.all()
-        if args not in storage.Classes():
+        if args == "":
+            print("** class name missing **")
+        elif args not in storage.classes():
             print("** class doesn't exist **")
         else:
             for key in all_obj.keys():
@@ -135,30 +146,40 @@ class HBNBCommand(cmd.Cmd):
     def do_update(self, line):
         """Updates an instance based on the class name and id by
         adding or updating attribute"""
-        match = re.search(r"^(\w+)\s+([^ ]*)\s+(\w+)? ?(.*)$", line)
+        if line == "" or line is None:
+            print("** class name missing **")
+            return
+        match = re.search(r"^(\S+)(?:\s(\S+)(?:\s(\S+)(?:\s((?:\"[^\"]*\
+                        \")|(?:(\S)+)))?)?)?", line)
         clas_name = match.group(1)
         id = match.group(2)
         attribute = match.group(3)
         value = match.group(4)
+        try:
+            value = eval(value)
+        except (TypeError, NameError):
+            pass
         if clas_name is None:
-            print("** class name is missing **")
-        elif clas_name not in storage.Classes():
+            print("** class name missing **")
+        elif clas_name not in storage.classes():
             print("** class doesn't exist **")
         elif id is None:
             print("** instance id missing **")
-        elif type(eval(value)) is dict:
-            clas_key = f"{clas_name}.{id}"
-            value_dict = eval(value)
-            for k, v in value_dict.items():
-                self.set_attribute(clas_name, clas_key, k, v)
-        elif attribute is None:
-            print("** attribute name missing **")
-        elif value is None:
-            print("** value missing **")
-        else:
-            clas_key = f"{clas_name}.{id}"
-            value = eval(value)
-            self.set_attribute(clas_name, clas_key, attribute, value)
+        elif id:
+            key = f"{clas_name}.{id}"
+            if key not in storage.all():
+                print("** no instance found **")
+            elif type(value) is dict:
+                clas_key = f"{clas_name}.{id}"
+                for k, v in value.items():
+                    self.set_attribute(clas_name, clas_key, k, v)
+            elif attribute == "None" or attribute is None:
+                print("** attribute name missing **")
+            elif value == "None" or value is None:
+                print("** value missing **")
+            else:
+                clas_key = f"{clas_name}.{id}"
+                self.set_attribute(clas_name, clas_key, attribute, value)
 
     def set_attribute(self, class_name, id, key, value):
         """set or update an attribute for the given class
