@@ -8,7 +8,7 @@
     width: 390px;
     padding: 20px;
     margin: 20px;
-    display: inline-block;
+    display: inline-table;
 }
 
 .places h1 {
@@ -132,4 +132,5 @@ div.number_bathrooms {
 .reviews li {
     font-size: 12px;
     padding: 0;
+    margin-top: -15px;
 }
