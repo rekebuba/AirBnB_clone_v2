@@ -26,7 +26,7 @@ class FileStorage:
         """serializes __objects to the JSON file (path: __file_path)"""
         with open(self.__file_path, 'w') as file:
             data = {k: v.to_dict() for k, v in self.__objects.items()}
-            json.dump(data, file)
+            json.dump(data, file, indent=4)
 
     def classes(self):
         """All the classes that are available in one dictionary"""

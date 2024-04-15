@@ -5,6 +5,8 @@ import cmd
 import re
 from models import storage
 from models.base_model import BaseModel
+from datetime import datetime
+import uuid
 
 
 class HBNBCommand(cmd.Cmd):
@@ -24,17 +26,30 @@ class HBNBCommand(cmd.Cmd):
         """emptyline should not execute anything"""
         pass
 
+
     def do_create(self, args):
         """Creates a new instance of BaseModel"""
+        matches = re.findall(r"^(\S*) ?|([^=]*)=\"?([^(\" )]*)\"? ?", args)
+        kwargs = {}
+        args = matches[0][0]
+        if len(matches) > 1:
+            kwargs['id'] = str(uuid.uuid4())
+            kwargs['created_at'] = datetime.now().isoformat()
+            kwargs['updated_at'] = datetime.now().isoformat()
+            for i, _ in enumerate(matches):
+                if i != 0:
+                    att = storage.attributes()[args][matches[i][1]]
+                    kwargs[matches[i][1]] = att(matches[i][2])
         if not args:
             print("** class name missing **")
         elif args not in storage.classes():
             print("** class doesn't exist **")
         else:
-            instance = storage.classes()[args]()
+            instance = storage.classes()[args](**kwargs)
+            if kwargs:
+                storage.new(instance)
             instance.save()
             print(instance.id)
-
     def do_show(self, args):
         """Prints the string representation of an instance
         based on the class name and id"""
