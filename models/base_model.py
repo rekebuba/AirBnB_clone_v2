@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """Module for Base_model"""
-
+from sqlalchemy.orm import declarative_base
 from models import storage
 from datetime import datetime
 import uuid
@@ -24,12 +24,12 @@ class BaseModel:
             self.id = str(uuid.uuid4())
             self.created_at = datetime.now()
             self.updated_at = datetime.now()
-            storage.new(self)
 
     def save(self):
         """updates the public instance attribute updated_at
         with the current datetime"""
         self.updated_at = datetime.now()
+        storage.new(self)
         storage.save()
 
     def to_dict(self):
@@ -41,6 +41,9 @@ class BaseModel:
         obj_dict['updated_at'] = obj_dict["updated_at"].isoformat()
         obj_dict['created_at'] = obj_dict["created_at"].isoformat()
         return obj_dict
+
+    def delete(self):
+        storage.delete(self)
 
     def __str__(self):
         """Return a string representation"""
