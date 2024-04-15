@@ -39,7 +39,7 @@ class HBNBCommand(cmd.Cmd):
             for i, _ in enumerate(matches):
                 if i != 0:
                     att = storage.attributes()[args][matches[i][1]]
-                    kwargs[matches[i][1]] = att(matches[i][2])
+                    kwargs[matches[i][1]] = att(matches[i][2].replace('_', ' '))
         if not args:
             print("** class name missing **")
         elif args not in storage.classes():
@@ -50,6 +50,7 @@ class HBNBCommand(cmd.Cmd):
                 storage.new(instance)
             instance.save()
             print(instance.id)
+
     def do_show(self, args):
         """Prints the string representation of an instance
         based on the class name and id"""
