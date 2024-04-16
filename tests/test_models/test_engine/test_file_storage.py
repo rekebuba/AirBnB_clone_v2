@@ -3,6 +3,7 @@
 
 import unittest
 from datetime import datetime
+from checker import Checker
 import time
 from models.base_model import BaseModel
 from models.engine.file_storage import FileStorage
@@ -62,7 +63,7 @@ class TestFileStorage(unittest.TestCase):
         self.resetStorage()
         self.assertEqual(storage.all(), {})
 
-        o = storage.classes()[classname]()
+        o = Checker().classes()[classname]()
         storage.new(o)
         key = "{}.{}".format(type(o).__name__, o.id)
         self.assertTrue(key in storage.all())
@@ -101,7 +102,7 @@ class TestFileStorage(unittest.TestCase):
         self.resetStorage()
         self.assertEqual(storage.all(), {})
 
-        cls = storage. classes()[classname]
+        cls = Checker().classes()[classname]
         objs = [cls() for i in range(1000)]
         [storage.new(o) for o in objs]
         self.assertEqual(len(objs), len(storage.all()))
@@ -157,7 +158,7 @@ class TestFileStorage(unittest.TestCase):
     def help_test_new(self, classname):
         """Helps tests new() method for classname."""
         self.resetStorage()
-        cls = storage.classes()[classname]
+        cls = Checker().classes()[classname]
         o = cls()
         storage.new(o)
         key = "{}.{}".format(type(o).__name__, o.id)
@@ -212,7 +213,7 @@ class TestFileStorage(unittest.TestCase):
     def help_test_save(self, classname):
         """Helps tests save() method for classname."""
         self.resetStorage()
-        cls = storage.classes()[classname]
+        cls = Checker().classes()[classname]
         o = cls()
         storage.new(o)
         key = "{}.{}".format(type(o).__name__, o.id)
@@ -274,7 +275,7 @@ class TestFileStorage(unittest.TestCase):
         self.resetStorage()
         storage.reload()
         self.assertEqual(FileStorage._FileStorage__objects, {})
-        cls = storage.classes()[classname]
+        cls = Checker().classes()[classname]
         o = cls()
         storage.new(o)
         key = "{}.{}".format(type(o).__name__, o.id)
@@ -316,7 +317,7 @@ class TestFileStorage(unittest.TestCase):
         storage.reload()
         self.assertEqual(FileStorage._FileStorage__objects, {})
 
-        cls = storage.classes()[classname]
+        cls = Checker().classes()[classname]
         o = cls()
         storage.new(o)
         key = "{}.{}".format(type(o).__name__, o.id)

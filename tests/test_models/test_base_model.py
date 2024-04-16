@@ -4,6 +4,7 @@
 from models import storage
 from models.base_model import BaseModel
 from models.engine.file_storage import FileStorage
+from checker import Checker
 from datetime import datetime
 import json
 import os
@@ -58,7 +59,7 @@ class TestBaseModel(unittest.TestCase):
     def test_3_attributes(self):
         """Tests attributes value for instance of a BaseModel class."""
 
-        attributes = storage.attributes()["BaseModel"]
+        attributes = Checker().attributes()["BaseModel"]
         o = BaseModel()
         for k, v in attributes.items():
             self.assertTrue(hasattr(o, k))

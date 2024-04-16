@@ -3,11 +3,12 @@
 
 import cmd
 import re
+from checker import Checker
 from models import storage
 from models.base_model import BaseModel
 from datetime import datetime
 import uuid
-
+from models.engine.file_storage import FileStorage
 
 class HBNBCommand(cmd.Cmd):
     """Command line program"""
@@ -38,16 +39,14 @@ class HBNBCommand(cmd.Cmd):
             kwargs['updated_at'] = datetime.now().isoformat()
             for i, _ in enumerate(matches):
                 if i != 0:
-                    att = storage.attributes()[args][matches[i][1]]
+                    att = Checker().attributes()[args][matches[i][1]]
                     kwargs[matches[i][1]] = att(matches[i][2].replace('_', ' '))
         if not args:
             print("** class name missing **")
-        elif args not in storage.classes():
+        elif args not in Checker().classes():
             print("** class doesn't exist **")
         else:
-            instance = storage.classes()[args](**kwargs)
-            if kwargs:
-                storage.new(instance)
+            instance = Checker().classes()[args](**kwargs)
             instance.save()
             print(instance.id)
 
@@ -57,7 +56,7 @@ class HBNBCommand(cmd.Cmd):
         arg = args.split()
         if args == "" or args is None:
             print("** class name missing **")
-        elif arg[0] not in storage.classes():
+        elif arg[0] not in Checker().classes():
             print("** class doesn't exist **")
         elif len(arg) < 2:
             print("** instance id missing **")
@@ -75,7 +74,7 @@ class HBNBCommand(cmd.Cmd):
         arg = args.split()
         if not arg:
             print("** class name missing **")
-        elif arg[0] not in storage.classes():
+        elif arg[0] not in Checker().classes():
             print("** class doesn't exist **")
         elif len(arg) < 2:
             print("** instance id missing **")
@@ -93,9 +92,9 @@ class HBNBCommand(cmd.Cmd):
         """Prints all string representation of all instances
         based or not on the class name"""
         storage.reload()
-        all_objs = storage.all()
+        all_objs = storage.all(args)
         lists = []
-        if args and args not in storage.classes():
+        if args and args not in Checker().classes():
             print("** class doesn't exist **")
         elif args:
             for key in all_objs.keys():
@@ -151,7 +150,7 @@ class HBNBCommand(cmd.Cmd):
         all_obj = storage.all()
         if args == "":
             print("** class name missing **")
-        elif args not in storage.classes():
+        elif args not in Checker().classes():
             print("** class doesn't exist **")
         else:
             for key in all_obj.keys():
@@ -177,7 +176,7 @@ class HBNBCommand(cmd.Cmd):
             pass
         if clas_name is None:
             print("** class name missing **")
-        elif clas_name not in storage.classes():
+        elif clas_name not in Checker().classes():
             print("** class doesn't exist **")
         elif id is None:
             print("** instance id missing **")
