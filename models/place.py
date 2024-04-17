@@ -6,6 +6,8 @@ from sqlalchemy import Column, String, Integer, Float, ForeignKey
 from sqlalchemy.orm import relationship
 from models import storage_type
 from sqlalchemy.sql.schema import Table
+from models.amenity import Amenity
+from models.review import Review
 
 if storage_type == 'db':
     place_amenity = Table('place_amenity', Base.metadata,

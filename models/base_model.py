@@ -49,13 +49,13 @@ class BaseModel:
         returns a dictionary containing all key/values of __dict__ of datetime
         """
         obj_dict = self.__dict__.copy()
-        obj_dict['__class__'] = type(self).__name__
-        obj_dict['updated_at'] = obj_dict["updated_at"].isoformat()
-        obj_dict['created_at'] = obj_dict["created_at"].isoformat()
-        try:
-            del obj_dict['_sa_instance_state']
-        except KeyError:
-            pass
+        obj_dict['__class__'] = self.__class__.__name__
+        for k in obj_dict:
+            if type(obj_dict[k]) is datetime:
+                obj_dict[k] = obj_dict[k].isoformat()
+        if '_sa_instance_state' in obj_dict.keys():
+            del(obj_dict['_sa_instance_state'])
+        return obj_dict
         return obj_dict
 
     def delete(self):
