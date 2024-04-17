@@ -8,11 +8,17 @@ from models import storage
 from models.base_model import BaseModel
 from datetime import datetime
 import uuid
+import sys
 
 
 class HBNBCommand(cmd.Cmd):
     """Command line program"""
-    prompt = '(hbnb) '
+    prompt = '(hbnb) ' if sys.__stdin__.isatty() else ''
+
+    def preloop(self):
+        """Prints if isatty is false"""
+        if not sys.__stdin__.isatty():
+            print('(hbnb)')
 
     def do_EOF(self, args):
         """Used to exit the program"""
@@ -36,7 +42,8 @@ class HBNBCommand(cmd.Cmd):
             for i, _ in enumerate(matches):
                 if i != 0:
                     att = Checker().attributes()[args][matches[i][1]]
-                    kwargs[matches[i][1]] = att(matches[i][2].replace('_', ' '))
+                    kwargs[matches[i][1]] = att(matches[i][2].replace(
+                                                                    '_', ' '))
         if not args:
             print("** class name missing **")
         elif args not in Checker().classes():
@@ -95,18 +102,10 @@ class HBNBCommand(cmd.Cmd):
         elif args:
             for key, value in all_objs.items():
                 if key[:key.index('.')] == args:
-                    try:
-                        del value.__dict__['_sa_instance_state']
-                    except KeyError:
-                        pass
                     lists.append(str(all_objs[key]))
             print(lists)
         else:
             for key, value in all_objs.items():
-                try:
-                    del value.__dict__['_sa_instance_state']
-                except KeyError:
-                    pass
                 lists.append(str(all_objs[key]))
             print(lists)
 

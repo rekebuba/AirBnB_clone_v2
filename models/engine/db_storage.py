@@ -41,7 +41,7 @@ class DBStorage:
         all objects depending of the cls name
         if cls=None, query all types of objects
         """
-        dct = {}
+        obj_dict = {}
         checker = Checker()
         classes_dict = checker.classes()
         if cls is None or cls == '':
@@ -50,13 +50,13 @@ class DBStorage:
                     objs = self.__session.query(c).all()
                     for obj in objs:
                         key = obj.__class__.__name__ + '.' + obj.id
-                        dct[key] = obj
+                        obj_dict[key] = obj
         else:
             objs = self.__session.query(cls).all()
             for obj in objs:
                 key = obj.__class__.__name__ + '.' + obj.id
-                dct[key] = obj
-        return dct
+                obj_dict[key] = obj
+        return obj_dict
 
     def new(self, obj):
         """

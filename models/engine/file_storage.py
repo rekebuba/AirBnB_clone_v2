@@ -17,16 +17,19 @@ class FileStorage:
 
     def all(self, cls=None):
         """returns the dictionary __objects"""
-        keys = self.__objects.keys()
         obj_dict = {}
-        for key in keys:
+        for key, value in self.__objects.items():
+            # try:
+            #     del value.__dict__['_sa_instance_state']
+            #     ...
+            # except KeyError:
+            #     pass
             if cls:
                 if self.__objects[key].__class__ == cls:
                     obj_dict[key] = self.__objects[key]
             else:
                 obj_dict[key] = self.__objects[key]
         return obj_dict
-
 
     def new(self, obj):
         """sets in __objects the obj with key <obj class name>.id"""

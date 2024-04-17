@@ -54,8 +54,7 @@ class BaseModel:
             if type(obj_dict[k]) is datetime:
                 obj_dict[k] = obj_dict[k].isoformat()
         if '_sa_instance_state' in obj_dict.keys():
-            del(obj_dict['_sa_instance_state'])
-        return obj_dict
+            del obj_dict['_sa_instance_state']
         return obj_dict
 
     def delete(self):

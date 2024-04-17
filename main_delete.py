@@ -1,49 +1,49 @@
 #!/usr/bin/python3
-""" Test link Many-To-Many Place <> Amenity
+""" Test delete feature
 """
-from models import storage
-from models.city import City
+from models.engine.db_storage import DBStorage
 from models.state import State
-from models.place import Place
-from models.user import User
-from models.amenity import Amenity
-from models.review import Review
 
-# creation of a State
-state = State(name="California")
-state.save()
+fs = DBStorage()
+fs.reload()
 
-# creation of a City
-city = City(state_id=state.id, name="San Francisco")
-city.save()
+# All States
+all_states = fs.all(State)
+print("All States: {}".format(len(all_states.keys())))
+for state_key in all_states.keys():
+    print(all_states[state_key])
 
-# creation of a User
-user = User(email="john@snow.com", password="johnpwd")
-user.save()
+# Create a new State
+new_state = State()
+new_state.name = "California"
+fs.new(new_state)
+fs.save()
+print("New State: {}".format(new_state))
 
-# creation of 2 Places
-place_1 = Place(user_id=user.id, city_id=city.id, name="House 1")
-place_1.save()
-place_2 = Place(user_id=user.id, city_id=city.id, name="House 2")
-place_2.save()
+# All States
+all_states = fs.all(State)
+print("All States: {}".format(len(all_states.keys())))
+for state_key in all_states.keys():
+    print(all_states[state_key])
 
-# creation of 3 various Amenity
-amenity_1 = Amenity(name="Wifi")
-amenity_1.save()
-amenity_2 = Amenity(name="Cable")
-amenity_2.save()
-amenity_3 = Amenity(name="Oven")
-amenity_3.save()
+# Create another State
+another_state = State()
+another_state.name = "Nevada"
+fs.new(another_state)
+fs.save()
+print("Another State: {}".format(another_state))
 
-# link place_1 with 2 amenities
-place_1.amenities.append(amenity_1)
-place_1.amenities.append(amenity_2)
+# All States
+all_states = fs.all(State)
+print("All States: {}".format(len(all_states.keys())))
+for state_key in all_states.keys():
+    print(all_states[state_key])        
 
-# link place_2 with 3 amenities
-place_2.amenities.append(amenity_1)
-place_2.amenities.append(amenity_2)
-place_2.amenities.append(amenity_3)
+# Delete the new State
+fs.delete(new_state)
 
-storage.save()
-
-print("OK")
+# All States
+all_states = fs.all(State)
+print("All States: {}".format(len(all_states.keys())))
+for state_key in all_states.keys():
+    print(all_states[state_key])
