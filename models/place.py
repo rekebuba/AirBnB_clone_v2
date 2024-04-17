@@ -5,6 +5,19 @@ from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String, Integer, Float, ForeignKey
 from sqlalchemy.orm import relationship
 from models import storage_type
+from sqlalchemy.sql.schema import Table
+
+if storage_type == 'db':
+    place_amenity = Table('place_amenity', Base.metadata,
+                          Column('place_id', String(60),
+                                 ForeignKey('places.id'),
+                                 primary_key=True,
+                                 nullable=False),
+                          Column('amenity_id', String(60),
+                                 ForeignKey('amenities.id'),
+                                 primary_key=True,
+                                 nullable=False)
+                          )
 
 class Place(BaseModel, Base):
     """Class for managing Place objects"""
@@ -20,6 +33,7 @@ class Place(BaseModel, Base):
         latitude = Column(Float)
         longitude = Column(Float)
         reviews = relationship("Review", backref='place', cascade="all, delete")
+        amenities = relationship('Amenity', secondary=place_amenity, viewonly=False, backref='place_amenities')
     else:
         city_id = ""
         user_id = ""
