@@ -93,12 +93,20 @@ class HBNBCommand(cmd.Cmd):
         if args and args not in Checker().classes():
             print("** class doesn't exist **")
         elif args:
-            for key in all_objs.keys():
+            for key, value in all_objs.items():
                 if key[:key.index('.')] == args:
+                    try:
+                        del value.__dict__['_sa_instance_state']
+                    except KeyError:
+                        pass
                     lists.append(str(all_objs[key]))
             print(lists)
         else:
-            for key in all_objs.keys():
+            for key, value in all_objs.items():
+                try:
+                    del value.__dict__['_sa_instance_state']
+                except KeyError:
+                    pass
                 lists.append(str(all_objs[key]))
             print(lists)
 

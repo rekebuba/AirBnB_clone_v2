@@ -1,19 +1,22 @@
 #!/usr/bin/python3
 """Module for TestHBNBCommand class."""
 
-from console import HBNBCommand
-from models.engine.file_storage import FileStorage
-import unittest
-import datetime
-from unittest.mock import patch
-import sys
-from io import StringIO
 import re
 import os
-
+import sys
 import json
 import MySQLdb
+import unittest
+import datetime
 import sqlalchemy
+from io import StringIO
+from models import storage
+from models.user import User
+from console import HBNBCommand
+from unittest.mock import patch
+from tests import clear_stream
+from models.base_model import BaseModel
+from models.engine.file_storage import FileStorage
 
 
 class TestHBNBCommand(unittest.TestCase):

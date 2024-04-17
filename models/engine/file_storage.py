@@ -19,16 +19,20 @@ class FileStorage:
         """returns the dictionary __objects"""
         keys = self.__objects.keys()
         obj_dict = {}
-        if cls:
-            for key in keys:
+        for key in keys:
+            if cls:
                 if self.__objects[key].__class__ == cls:
                     obj_dict[key] = self.__objects[key]
-            return obj_dict
-        return self.__objects
+            else:
+                obj_dict[key] = self.__objects[key]
+        return obj_dict
+
 
     def new(self, obj):
         """sets in __objects the obj with key <obj class name>.id"""
-        self.__objects[f'{obj.__class__.__name__}.{obj.id}'] = obj
+        self.__objects.update(
+            {obj.to_dict()['__class__'] + '.' + obj.id: obj}
+            )
 
     def save(self):
         """serializes __objects to the JSON file (path: __file_path)"""
