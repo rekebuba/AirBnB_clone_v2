@@ -8,7 +8,6 @@ from models import storage
 from models.base_model import BaseModel
 from datetime import datetime
 import uuid
-from models.engine.file_storage import FileStorage
 
 class HBNBCommand(cmd.Cmd):
     """Command line program"""
@@ -34,9 +33,6 @@ class HBNBCommand(cmd.Cmd):
         kwargs = {}
         args = matches[0][0]
         if len(matches) > 1:
-            kwargs['id'] = str(uuid.uuid4())
-            kwargs['created_at'] = datetime.now().isoformat()
-            kwargs['updated_at'] = datetime.now().isoformat()
             for i, _ in enumerate(matches):
                 if i != 0:
                     att = Checker().attributes()[args][matches[i][1]]

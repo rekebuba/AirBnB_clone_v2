@@ -2,9 +2,10 @@
 """Module for Base_model"""
 from sqlalchemy.orm import declarative_base
 from sqlalchemy import Column, String, Integer, ForeignKey, DateTime
-from models import storage
 from datetime import datetime
 import uuid
+from models import storage_type
+
 
 Base = declarative_base()
 
@@ -18,15 +19,17 @@ class BaseModel:
         """Public instance attributes"""
         if kwargs is not None and kwargs != {}:
             for key, value in kwargs.items():
-                if key == "created_at":
-                    self.__dict__["created_at"] = datetime.strptime(
-                        kwargs["created_at"], "%Y-%m-%dT%H:%M:%S.%f")
-                elif key == "updated_at":
-                    self.__dict__["updated_at"] = datetime.strptime(
-                        kwargs["updated_at"], "%Y-%m-%dT%H:%M:%S.%f")
-                else:
-                    self.__dict__[key] = value
-                setattr(self, key, value)
+                if key in ['created_at', 'updated_at']:
+                    setattr(self, key, datetime.fromisoformat(value))
+                elif key != '__class__':
+                    setattr(self, key, value)
+            if storage_type == 'db':
+                if not hasattr(kwargs, 'id'):
+                    setattr(self, 'id', str(uuid.uuid4()))
+                if not hasattr(kwargs, 'created_at'):
+                    setattr(self, 'created_at', datetime.now())
+                if not hasattr(kwargs, 'updated_at'):
+                    setattr(self, 'updated_at', datetime.now())
         else:
             self.id = str(uuid.uuid4())
             self.created_at = datetime.now()
@@ -35,6 +38,7 @@ class BaseModel:
     def save(self):
         """updates the public instance attribute updated_at
         with the current datetime"""
+        from models import storage
         self.updated_at = datetime.now()
         storage.new(self)
         storage.save()
@@ -54,6 +58,7 @@ class BaseModel:
         return obj_dict
 
     def delete(self):
+        from models import storage
         storage.delete(self)
 
     def __str__(self):

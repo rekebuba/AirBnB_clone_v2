@@ -1,12 +1,12 @@
 #!/usr/bin/python3
 """User Class"""
 
-from models.base_model import BaseModel
+from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String
 from models import storage_type
-from sqlalchemy.orm import relationships
+from sqlalchemy.orm import relationship
 
-class User(BaseModel):
+class User(BaseModel, Base):
     """Class for managing User objects"""
     __tablename__ ='users'
     if storage_type == 'db':
@@ -14,7 +14,8 @@ class User(BaseModel):
         password = Column(String(128), nullable=False)
         first_name = Column(String(128))
         last_name = Column(String(128))
-        places = relationships('place', backref='User', cascade="all, delete")
+        places = relationship('Place', backref='User', cascade="all, delete")
+        reviews = relationship('Review', backref='user', cascade='all, delete')
     else:
         email = ""
         password = ""
