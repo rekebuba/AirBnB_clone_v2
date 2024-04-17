@@ -7,6 +7,7 @@ from models import storage_type
 from sqlalchemy.orm import relationship
 from models.place import Place
 
+
 class City(BaseModel, Base):
     """Class for managing City objects"""
     __tablename__ = 'cities'

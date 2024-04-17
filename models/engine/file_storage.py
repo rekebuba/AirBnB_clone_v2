@@ -23,7 +23,7 @@ class FileStorage:
             for key in keys:
                 if self.__objects[key].__class__ == cls:
                     obj_dict[key] = self.__objects[key]
-            return obj_dict    
+            return obj_dict
         return self.__objects
 
     def new(self, obj):
@@ -34,13 +34,14 @@ class FileStorage:
         """serializes __objects to the JSON file (path: __file_path)"""
         with open(self.__file_path, 'w') as file:
             data = {k: v.to_dict() for k, v in self.__objects.items()}
-            json.dump(data, file, indent=4)
+            json.dump(data, file)
 
     def delete(self, obj=None):
         try:
             del self.__objects[f"{obj.__class__.__name__}.{obj.id}"]
         except KeyError:
             pass
+
     def reload(self):
         """deserializes the JSON file to __objects
         (only if the JSON file (__file_path) exists"""
@@ -50,5 +51,3 @@ class FileStorage:
                 for key, value in data.items():
                     A = key.index('.')
                     self.__objects[key] = Checker().classes()[key[:A]](**value)
-        else:
-            return

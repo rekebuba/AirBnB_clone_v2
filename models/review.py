@@ -4,6 +4,8 @@
 from models.base_model import BaseModel, Base
 from models import storage_type
 from sqlalchemy import Column, String, ForeignKey
+
+
 class Review(BaseModel, Base):
     """Class for managing Review objects"""
     __tablename__ = 'reviews'

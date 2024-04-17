@@ -6,6 +6,7 @@ from sqlalchemy import Column, String
 from sqlalchemy.orm import relationship
 from models import storage_type
 
+
 class State(BaseModel, Base):
     """Class for managing State objects"""
     __tablename__ = 'states'

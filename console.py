@@ -9,6 +9,7 @@ from models.base_model import BaseModel
 from datetime import datetime
 import uuid
 
+
 class HBNBCommand(cmd.Cmd):
     """Command line program"""
     prompt = '(hbnb) '
@@ -25,7 +26,6 @@ class HBNBCommand(cmd.Cmd):
     def emptyline(self):
         """emptyline should not execute anything"""
         pass
-
 
     def do_create(self, args):
         """Creates a new instance of BaseModel"""
@@ -88,7 +88,7 @@ class HBNBCommand(cmd.Cmd):
         """Prints all string representation of all instances
         based or not on the class name"""
         storage.reload()
-        all_objs = storage.all(args)
+        all_objs = storage.all()
         lists = []
         if args and args not in Checker().classes():
             print("** class doesn't exist **")

@@ -6,9 +6,10 @@ from sqlalchemy import Column, String
 from models import storage_type
 from sqlalchemy.orm import relationship
 
+
 class User(BaseModel, Base):
     """Class for managing User objects"""
-    __tablename__ ='users'
+    __tablename__ = 'users'
     if storage_type == 'db':
         email = Column(String(128), nullable=False)
         password = Column(String(128), nullable=False)

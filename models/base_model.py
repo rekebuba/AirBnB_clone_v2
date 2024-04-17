@@ -9,6 +9,7 @@ from models import storage_type
 
 Base = declarative_base()
 
+
 class BaseModel:
     """defines all common attributes/methods for other classes"""
     id = Column(String(60), nullable=False, primary_key=True)
