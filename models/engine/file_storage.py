@@ -3,7 +3,6 @@
 import datetime
 import json
 import os
-from checker import Checker
 
 
 class FileStorage:
@@ -60,4 +59,24 @@ class FileStorage:
                 data = json.load(file)
                 for key, value in data.items():
                     A = key.index('.')
-                    self.__objects[key] = Checker().classes()[key[:A]](**value)
+                    self.__objects[key] = self.classes()[key[:A]](**value)
+    def classes(self):
+        """All the classes that are available in one dictionary"""
+        from models.base_model import BaseModel
+        from models.user import User
+        from models.amenity import Amenity
+        from models.city import City
+        from models.place import Place
+        from models.review import Review
+        from models.state import State
+
+        classes = {
+            "BaseModel": BaseModel,
+            "User": User,
+            "Amenity": Amenity,
+            "City": City,
+            "Place": Place,
+            "Review": Review,
+            "State": State
+        }
+        return classes

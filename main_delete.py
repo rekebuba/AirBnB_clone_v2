@@ -1,11 +1,10 @@
 #!/usr/bin/python3
 """ Test delete feature
 """
-from models.engine.db_storage import DBStorage
+from models.engine.file_storage import FileStorage
 from models.state import State
 
-fs = DBStorage()
-fs.reload()
+fs = FileStorage()
 
 # All States
 all_states = fs.all(State)
