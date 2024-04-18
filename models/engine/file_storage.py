@@ -1,6 +1,5 @@
 #!/usr/bin/python3
 """module for File storage"""
-
 import datetime
 import json
 import os
@@ -44,6 +43,10 @@ class FileStorage:
             json.dump(data, file)
 
     def delete(self, obj=None):
+        """
+        delete obj from __objects if it's inside
+        if obj is equal to None, the method should not do anything
+        """
         try:
             del self.__objects[f"{obj.__class__.__name__}.{obj.id}"]
         except KeyError:
