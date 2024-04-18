@@ -2,8 +2,8 @@
 ''' module for file_storage tests '''
 import unittest
 import MySQLdb
-from models.user import User
 from models import storage
+from models.user import User
 from datetime import datetime
 import os
 

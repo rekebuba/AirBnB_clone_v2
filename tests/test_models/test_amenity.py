@@ -1,39 +1,22 @@
 #!/usr/bin/python3
-"""Unittest module for the Amenity class."""
-
-import unittest
-from models.base_model import BaseModel
+""" """
+from tests.test_models.test_base_model import test_basemodel
 from models.amenity import Amenity
-from models.engine.file_storage import FileStorage
 import os
 
 
-class TestFileStorage(unittest.TestCase):
-    """Test cases for Amenity class"""
+class test_Amenity(test_basemodel):
+    """ amenity test class"""
 
-    def setUp(self):
-        """Sets up test methods."""
-        pass
+    def __init__(self, *args, **kwargs):
+        """inti the test class """
+        super().__init__(*args, **kwargs)
+        self.name = "Amenity"
+        self.value = Amenity
 
-    def tearDown(self):
-        """Tears down test methods."""
-        self.resetStorage()
-        pass
-
-    def resetStorage(self):
-        """Resets amenity data."""
-        FileStorage._FileStorage__objects = {}
-        if os.path.isfile(FileStorage._FileStorage__file_path):
-            os.remove(FileStorage._FileStorage__file_path)
-
-    def test_instantiation(self):
-        """Tests instantiation of Amenity class."""
-
-        b = Amenity()
-        self.assertEqual(str(type(b)), "<class 'models.amenity.Amenity'>")
-        self.assertIsInstance(b, Amenity)
-        self.assertTrue(issubclass(type(b), BaseModel))
-
-
-if __name__ == '__main__':
-    unittest.main()
+    def test_name2(self):
+        """testing name type """
+        new = self.value()
+        self.assertEqual(type(new.name), str if
+                         os.getenv('HBNB_TYPE_STORAGE') != 'db' else
+                         type(None))

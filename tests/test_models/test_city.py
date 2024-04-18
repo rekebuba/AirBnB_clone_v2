@@ -1,39 +1,29 @@
 #!/usr/bin/python3
-"""Unittest module for the City class."""
-
-import unittest
-from models.base_model import BaseModel
+""" """
+from tests.test_models.test_base_model import test_basemodel
 from models.city import City
-from models.engine.file_storage import FileStorage
 import os
 
 
-class TestFileStorage(unittest.TestCase):
-    """Test cases for City class"""
+class test_City(test_basemodel):
+    """ tests for city """
 
-    def setUp(self):
-        """Sets up test methods."""
-        pass
+    def __init__(self, *args, **kwargs):
+        """ init the test class"""
+        super().__init__(*args, **kwargs)
+        self.name = "City"
+        self.value = City
 
-    def tearDown(self):
-        """Tears down test methods."""
-        self.resetStorage()
-        pass
+    def test_state_id(self):
+        """ testing state_id type """
+        new = self.value()
+        self.assertEqual(type(new.state_id), str if
+                         os.getenv('HBNB_TYPE_STORAGE') != 'db' else
+                         type(None))
 
-    def resetStorage(self):
-        """Resets city data."""
-        FileStorage._FileStorage__objects = {}
-        if os.path.isfile(FileStorage._FileStorage__file_path):
-            os.remove(FileStorage._FileStorage__file_path)
-
-    def test_instantiation(self):
-        """Tests instantiation of City class."""
-
-        b = City()
-        self.assertEqual(str(type(b)), "<class 'models.city.City'>")
-        self.assertIsInstance(b, City)
-        self.assertTrue(issubclass(type(b), BaseModel))
-
-
-if __name__ == "__main__":
-    unittest.main()
+    def test_name(self):
+        """ testing name type"""
+        new = self.value()
+        self.assertEqual(type(new.name), str if
+                         os.getenv('HBNB_TYPE_STORAGE') != 'db' else
+                         type(None))
