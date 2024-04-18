@@ -17,11 +17,6 @@ class FileStorage:
         """returns the dictionary __objects"""
         obj_dict = {}
         for key, value in self.__objects.items():
-            # try:
-            #     del value.__dict__['_sa_instance_state']
-            #     ...
-            # except KeyError:
-            #     pass
             if cls:
                 if self.__objects[key].__class__ == cls:
                     obj_dict[key] = self.__objects[key]
@@ -60,6 +55,7 @@ class FileStorage:
                 for key, value in data.items():
                     A = key.index('.')
                     self.__objects[key] = self.classes()[key[:A]](**value)
+
     def classes(self):
         """All the classes that are available in one dictionary"""
         from models.base_model import BaseModel
