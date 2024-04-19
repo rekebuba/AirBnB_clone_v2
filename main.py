@@ -4,20 +4,7 @@ import io
 import sys
 import cmd
 import shutil
-
-"""
- Cleanup file storage
-"""
 import os
-file_path = "file.json"
-if not os.path.exists(file_path):
-    try:
-        from models.engine.file_storage import FileStorage
-        file_path = FileStorage._FileStorage__file_path
-    except:
-        pass
-if os.path.exists(file_path):
-    os.remove(file_path)
 
 """
  Backup console file
@@ -25,19 +12,6 @@ if os.path.exists(file_path):
 if os.path.exists("tmp_console_main.py"):
     shutil.copy("tmp_console_main.py", "console.py")
 shutil.copy("console.py", "tmp_console_main.py")
-
-"""
- Backup models/__init__.py file
-"""
-if os.path.exists("models/tmp__init__.py"):
-    shutil.copy("models/tmp__init__.py", "models/__init__.py")
-shutil.copy("models/__init__.py", "models/tmp__init__.py")
-
-"""
- Overwrite models/__init__.py file with switch_to_file_storage.py
-"""
-if os.path.exists("switch_to_file_storage.py"):
-    shutil.copy("switch_to_file_storage.py", "models/__init__.py")
 
 
 """
@@ -58,6 +32,7 @@ with open("tmp_console_main.py", "r") as file_i:
 
 import console
 
+
 """
  Create console
 """
@@ -68,6 +43,7 @@ for name, obj in inspect.getmembers(console):
 
 my_console = console_obj(stdout=io.StringIO(), stdin=io.StringIO())
 my_console.use_rawinput = False
+
 
 """
  Exec command
@@ -81,21 +57,25 @@ def exec_command(my_console, the_command, last_lines = 1):
     lines = my_console.stdout.getvalue().split("\n")
     return "\n".join(lines[(-1*(last_lines+1)):-1])
 
+
 """
  Tests
 """
-result = exec_command(my_console, "create State")
-if result is None or result == "":
-    print("FAIL: No ID retrieved")
-    
-model_id = result
+state_id = exec_command(my_console, "create State name=\"California\"")
+if state_id is None or state_id == "":
+    print("FAIL: Can't create State")
 
-result = exec_command(my_console, "show State {}".format(model_id))
-if result is None or result == "":
-    print("FAIL: empty output")
-if "[State]" not in result or model_id not in result:
-    print("FAIL: wrong output format: \"{}\"".format(result))
+city_id = exec_command(my_console, "create City state_id=\"{}\" name=\"Fremont\"".format(state_id))
+if city_id is None or city_id == "":
+    print("FAIL: Can't create City")
+
+user_id = exec_command(my_console, "create User email=\"a@a.com\" password=\"pwd\" first_name=\"fn\" last_name=\"ln\"")
+if user_id is None or user_id == "":
+    print("FAIL: Can't create User")
+
+place_id = exec_command(my_console, "create Place city_id=\"{}\" user_id=\"{}\" name=\"House\" description=\"des\" number_rooms=4 number_bathrooms=2 max_guest=6 price_by_night=100 latitude=1.3 longitude=2.3".format(city_id, user_id))
+if place_id is None or place_id == "":
+    print("FAIL: Can't create Place")
 print("OK", end="")
 
 shutil.copy("tmp_console_main.py", "console.py")
-shutil.copy("models/tmp__init__.py", "models/__init__.py")
