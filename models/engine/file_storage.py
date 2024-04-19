@@ -41,10 +41,11 @@ class FileStorage:
         delete obj from __objects if it's inside
         if obj is equal to None, the method should not do anything
         """
-        try:
-            del self.__objects[f"{obj.__class__.__name__}.{obj.id}"]
-        except KeyError:
-            pass
+        if obj:
+            key = f"{obj.__class__.__name__}.{obj.id}"
+            for key in self.__objects.keys():
+                del self.__objects[key]
+                break
 
     def reload(self):
         """deserializes the JSON file to __objects
