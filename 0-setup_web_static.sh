@@ -32,7 +32,7 @@ if [ ! -d "data/web_static/releases/test" ]; then
     </html>"
 
     touch data/web_static/releases/test/index.html
-    echo "$code" | tee data/web_static/releases/test/index.html
+    echo "$code" | tee data/web_static/releases/test/index.html &> /dev/null
 fi
 
 chmod 777 -R data/
@@ -45,6 +45,6 @@ server_config=\
             autoindex off;
         }
 '
-if ! grep -qF "$server_config" /etc/nginx/sites-available/default; then
+if ! grep -qF "locarion /current/" /etc/nginx/sites-available/default; then
     sudo sed -i '55 r /dev/stdin' /etc/nginx/sites-available/default <<< "$server_config"
 fi
