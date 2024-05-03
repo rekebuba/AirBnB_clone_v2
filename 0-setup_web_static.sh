@@ -35,4 +35,4 @@ server_config=\
 if ! grep -qF "location /hbnb_static/" /etc/nginx/sites-available/default; then
     sudo sed -i '55 r /dev/stdin' /etc/nginx/sites-available/default <<< "$server_config"
 fi
-sudo systemctl restart nginx
+sudo service nginx restart
