@@ -5,43 +5,36 @@ if ! command -v nginx -v &> /dev/null; then
     sudo apt -y install nginx
 fi
 
-if ! command -v cd data/ &> /dev/null; then
+if [ ! -d "data" ]; then
     mkdir data
 fi
 
-if ! command -v cd data/web_static/ &> /dev/null; then
+if [ ! -d "data/web_static" ]; then
     mkdir data/web_static
 fi
 
-if ! command -v cd data/web_static/releases/ &> /dev/null; then
+if [ ! -d "data/web_static/releases" ]; then
     mkdir data/web_static/releases
 fi
 
-if ! command -v cd data/web_static/shared/ &> /dev/null; then
+if [ ! -d "data/web_static/shared" ]; then
     mkdir data/web_static/shared
 fi
 
-if ! command -v cd data/web_static/shared/ &> /dev/null; then
-    mkdir data/web_static/shared
-fi
-
-if ! command -v cd data/web_static/releases/test/ &> /dev/null; then
+if [ ! -d "data/web_static/releases/test" ]; then
     mkdir data/web_static/releases/test
     code="<html>
-    <head>
-    </head>
-    <body>
-        Holberton School
-    </body>
-    </html>
-        "
+        <head>
+        </head>
+        <body>
+            Holberton School
+        </body>
+    </html>"
+
     touch data/web_static/releases/test/index.html
     echo "$code" | tee data/web_static/releases/test/index.html
 fi
 
-if ! command -v cd data/web_static/current/ &> /dev/null; then
-    mkdir data/web_static/current
-fi
 chmod 777 -R data/
 ln -s -f data/web_static/releases/test/ data/web_static/current
 
