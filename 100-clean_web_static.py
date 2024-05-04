@@ -1,7 +1,7 @@
 """
 Fabric script (based on the file 3-deploy_web_static.py)
 """
-from fabric.api import local, run
+from fabric.api import *
 
 
 env.hosts = ['54.175.224.158', '100.25.129.156']
