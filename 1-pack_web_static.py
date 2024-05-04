@@ -11,7 +11,7 @@ def do_pack():
     file_name = strftime('%Y%m%d%H%M%S')
     try:
         local('mkdir -p versions')
-        local(f'tar -cvf versions/web_static_{file_name}.tgz web_static')
+        local(f'tar -czvf versions/web_static_{file_name}.tgz web_static')
 
         return f"tar -cvf versions/web_static_{file_name}.tgz"
     except Exception as e:
