@@ -12,7 +12,7 @@ env.user = 'ubuntu'
 env.key_filename = '~/.ssh/id_rsa'
 
 
-def do_deploy(archive_2path):
+def do_deploy(archive_path):
     """
     A Fabric script that distributes an archive to
     web servers, using the function do_deploy
