@@ -12,7 +12,7 @@ env.user = 'ubuntu'
 env.key_filename = '~/.ssh/id_rsa'
 
 
-def do_deploy(archive_path):
+def do_deploy(archive_2path):
     """
     A Fabric script that distributes an archive to
     web servers, using the function do_deploy
@@ -23,7 +23,7 @@ def do_deploy(archive_path):
 
         file_name = re.search(r"web_static_\d*", archive_path).group()
         put(archive_path, "/tmp/")
-        run(f"sudo mkdir -p /data/web_static/releases/{file_name}")
+        run(f"sudo mkdir -p /data/web_static/releases/{file_name}/")
         run(f"sudo tar -xzf /tmp/{file_name}.tgz \
 -C /data/web_static/releases/{file_name}/")
         run(f"sudo rm /tmp/{file_name}.tgz")
@@ -32,7 +32,7 @@ def do_deploy(archive_path):
         run(f'sudo rm -rf /data/web_static/releases/\
 {file_name}/web_static')
         run("sudo rm -rf /data/web_static/current")
-        run(f"sudo ln -s -f /data/web_static/releases/{file_name} \
+        run(f"sudo ln -s /data/web_static/releases/{file_name} \
 /data/web_static/current")
     except Exception as e:
         return False
