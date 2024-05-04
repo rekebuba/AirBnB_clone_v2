@@ -4,7 +4,7 @@ import os
 import re
 
 
-env.hosts = ['54.175.224.158', '100.25.129.156']
+env.hosts = ['54.175.224.158']
 env.user = 'ubuntu'
 env.key_filename = '~/.ssh/authorized_keys'
 
