@@ -4,6 +4,8 @@ Fabric script (based on the file 2-do_deploy_web_static.py)
 """
 from fabric.api import *
 import os
+do_pack = __import__('1-pack_web_static.py').do_pack
+do_deploy = __import__('2-do_deploy_web_static.py').do_deploy
 
 env.hosts = ['54.175.224.158', '100.25.129.156']
 env.user = 'ubuntu'
