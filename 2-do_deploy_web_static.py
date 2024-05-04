@@ -32,7 +32,7 @@ def do_deploy(archive_2path):
         run(f'sudo rm -rf /data/web_static/releases/\
 {file_name}/web_static')
         run("sudo rm -rf /data/web_static/current")
-        run(f"sudo ln -s /data/web_static/releases/{file_name} \
+        run(f"sudo ln -s /data/web_static/releases/{file_name}/ \
 /data/web_static/current")
     except Exception:
         return False
