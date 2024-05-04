@@ -19,15 +19,16 @@ def do_deploy(archive_path):
             return False
 
         file_name = re.search(r"web_static_\d*", archive_path).group()
-        put("archive_path", "/temp/")
-        run(f"mkdir -p /data/web_static/releases/{file_name}")
-        run(f"sudo tar -xzf /data/web_static/releases/{file_name}.tgz \
-            -C /data/web_static/releases/{file_name}")
+        put(archive_path, "/tmp/")
+        run(f"sudo mkdir -p /data/web_static/releases/{file_name}")
+        run(f"sudo tar -xzf /tmp/{file_name}.tgz \
+-C /data/web_static/releases/{file_name}/")
         run(f"sudo rm /tmp/{file_name}.tgz")
         run("sudo rm -rf /data/web_static/current")
         run(f"sudo ln -s -f /data/web_static/releases/{file_name} \
-            /data/web_static/current")
-    except Exception:
+/data/web_static/current")
+    except Exception as e:
+        print(e)
         return False
 
     return True
