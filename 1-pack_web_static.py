@@ -2,5 +2,5 @@
 from fabric.api import local
 
 def do_pack():
-    local('uname -s')
+    result = local('uname -s', capture=True)
     print(result.stdout)
