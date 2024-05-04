@@ -13,7 +13,6 @@ env.user = 'ubuntu'
 env.key_filename = '~/.ssh/id_rsa'
 
 
-
 def do_pack():
     """
     A Fabric script that generates a .tgz archive
@@ -27,6 +26,7 @@ def do_pack():
         return f"versions/web_static_{file_name}.tgz"
     except Exception as e:
         return None
+
 
 def do_deploy(archive_path):
     """
