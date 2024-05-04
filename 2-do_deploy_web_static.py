@@ -34,7 +34,7 @@ def do_deploy(archive_2path):
         run("sudo rm -rf /data/web_static/current")
         run(f"sudo ln -s /data/web_static/releases/{file_name} \
 /data/web_static/current")
-    except Exception as e:
+    except Exception:
         return False
 
     return True
