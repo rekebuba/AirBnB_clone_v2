@@ -24,7 +24,7 @@ def do_pack():
         local('mkdir -p versions')
         local(f'tar -czvf versions/web_static_{file_name}.tgz web_static')
 
-        return f"tar -cvf versions/web_static_{file_name}.tgz"
+        return f"versions/web_static_{file_name}.tgz"
     except Exception as e:
         return None
 
