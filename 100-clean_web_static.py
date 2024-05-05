@@ -19,8 +19,10 @@ def do_clean(number=0):
 
     L_no_line = int(local(f"ls -c versions/ | grep 'web_static_' | wc -l",
                           capture=True))
+    if L_no_line < number:
+        L_no_line = number
     L_paths = local(f"ls -c versions/ | grep 'web_static_' | tail -n \
-        {L_no_line - number}", capture=True).split('\n')
+        {L_no_line - number}", capture=True).split()
 
     for L_path in L_paths:
         if L_path != '':
@@ -28,8 +30,10 @@ def do_clean(number=0):
 
     R_no_line = int(run("ls /data/web_static/releases/ | grep 'web_static_' \
 | wc -l"))
+    if R_no_line < number:
+        R_no_line = number
     R_paths = run(f"ls -c /data/web_static/releases/ | grep 'web_static_' \
-| tail -n {R_no_line - number}").split('\n')
+| tail -n {R_no_line - number}").split()
 
     for R_path in R_paths:
         if R_path != '':
