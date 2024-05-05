@@ -2,38 +2,20 @@
 # a Bash script that sets up web servers for the deployment of web_static
 
 if [ ! -x /usr/sbin/nginx ]; then
-    sudo apt -y update
-    sudo apt -y install nginx
+	sudo apt-get update -y -qq && \
+	     sudo apt-get install -y nginx
 fi
 
-sudo mkdir -p /data/web_static/releases /data/web_static/shared
+sudo mkdir -p /data/web_static/releases/test /data/web_static/shared/
 
-if [ ! -d "/data/web_static/releases/test" ]; then
-    sudo mkdir /data/web_static/releases/test
-    code="<html>
-        <head>
-        </head>
-        <body>
-            Holberton School
-        </body>
-    </html>"
+echo "<h1>Welcome<\h1>" | sudo dd status=none of=/data/web_static/releases/test/index.html
 
-    touch /data/web_static/releases/test/index.html
-    echo "$code" | tee /data/web_static/releases/test/index.html &> /dev/null
-fi
+sudo ln -sf /data/web_static/releases/test /data/web_static/current
 
 sudo chown -R ubuntu:ubuntu /data/
-sudo ln -s -f /data/web_static/releases/test /data/web_static/current
 
-server_config=\
-'
-        location /hbnb_static/ {
-            alias /data/web_static/current/;
-            autoindex off;
-        }
-'
-if ! grep -qF "location /hbnb_static/" /etc/nginx/sites-available/default; then
-    sudo sed -i '55 r /dev/stdin' /etc/nginx/sites-available/default <<< "$server_config"
-fi
+sudo cp /etc/nginx/sites-enabled/default nginx-sites-enabled_default.backup
+
+sudo sed -i '37i\\tlocation /hbnb_static/ {\n\t\talias /data/web_static/current/;\n\t}\n' /etc/nginx/sites-available/default
 
 sudo service nginx restart
