@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # a Bash script that sets up web servers for the deployment of web_static
 
-if ! command -v nginx -v &> /dev/null; then
+if [ ! -x /usr/sbin/nginx ]; then
     sudo apt -y update
     sudo apt -y install nginx
 fi
@@ -22,8 +22,8 @@ if [ ! -d "/data/web_static/releases/test" ]; then
     echo "$code" | tee /data/web_static/releases/test/index.html &> /dev/null
 fi
 
-sudo chmod 755 -R /data
-sudo ln -s -f /data/web_static/releases/test/ /data/web_static/current
+sudo chown -R ubuntu:ubuntu /data/
+sudo ln -s -f /data/web_static/releases/test /data/web_static/current
 
 server_config=\
 '
