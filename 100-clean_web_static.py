@@ -27,9 +27,9 @@ def do_clean(number=0):
             local(f"sudo rm -fr versions/{L_path}")
 
     R_no_line = int(run("ls /data/web_static/releases/ | grep 'web_static_' \
-| wc -l", capture_buffer_size=1))
+| wc -l"))
     R_paths = run(f"ls -c /data/web_static/releases/ | grep 'web_static_' \
-| tail -n {R_no_line - number}", capture_buffer_size=1).split('\n')
+| tail -n {R_no_line - number}").split('\n')
 
     for R_path in R_paths:
         if R_path != '':
