@@ -22,8 +22,8 @@ if [ ! -d "/data/web_static/releases/test" ]; then
     echo "$code" | tee /data/web_static/releases/test/index.html &> /dev/null
 fi
 
-chmod 755 -R /data
-ln -s -f /data/web_static/releases/test/ /data/web_static/current
+sudo chmod 755 -R /data
+sudo ln -s -f /data/web_static/releases/test/ /data/web_static/current
 
 server_config=\
 '
