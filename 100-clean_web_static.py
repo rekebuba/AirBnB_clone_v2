@@ -15,10 +15,7 @@ def do_clean(number=0):
     A Fabric script that deletes out-of-date archives,
     using the function do_clean:
     """
-    if number == 0:
-        number = 1
-    else:
-        number = int(number)
+    number = 1 if int(number) == 0 else int(number)
 
     L_no_line = local(f"ls -c versions/ | grep 'web_static_' | wc -l",
                       capture=True)
