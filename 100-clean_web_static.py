@@ -19,16 +19,16 @@ def do_clean(number=0):
     else:
         number = int(number)
 
-    L_no_line = local(f"ls -c versions/web_static_* | wc -l")
+    L_no_line = local(f"ls -c versions/web_static_* | wc -l", capture=True).stdout
     L_paths = local(f"ls -c versions/web_static_* | tail -n \
-        {int(L_no_line) - number}").split('\n')
+        {int(L_no_line) - number}", capture=True).stdout.split('\n')
 
     for L_path in L_paths:
         local(f"sudo rm -fr {path}")
 
-    R_no_line = run("ls -c /data/web_static/releases/web_static_* | wc -l")
+    R_no_line = run("ls -c /data/web_static/releases/web_static_* | wc -l", capture=True).stdout
     R_paths = run(f"ls -c /data/web_static/releases/web_static_* | tail -n \
-        {int(R_no_line) - number}").split('\n')
+        {int(R_no_line) - number}", capture=True).stdout.split('\n')
 
     for R_path in R_paths:
         run(f"sudo rm -fr {R_path}")
