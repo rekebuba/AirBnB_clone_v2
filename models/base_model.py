@@ -23,14 +23,12 @@ class BaseModel:
                     setattr(self, key, datetime.fromisoformat(value))
                 elif key != '__class__':
                     setattr(self, key, value)
-            from models import storage_type
-            if storage_type == 'db':
-                if not hasattr(kwargs, 'id'):
-                    setattr(self, 'id', str(uuid.uuid4()))
-                if not hasattr(kwargs, 'created_at'):
-                    setattr(self, 'created_at', datetime.now())
-                if not hasattr(kwargs, 'updated_at'):
-                    setattr(self, 'updated_at', datetime.now())
+            if not hasattr(kwargs, 'id') and self.id == None:
+                setattr(self, 'id', str(uuid.uuid4()))
+            if not hasattr(kwargs, 'created_at') and self.created_at == None:
+                setattr(self, 'created_at', datetime.now())
+            if not hasattr(kwargs, 'updated_at') and self.updated_at == None:
+                setattr(self, 'updated_at', datetime.now())
         else:
             self.id = str(uuid.uuid4())
             self.created_at = datetime.now()

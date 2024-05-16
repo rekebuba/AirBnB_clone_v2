@@ -75,3 +75,7 @@ class FileStorage:
             "State": State
         }
         return classes
+
+    def close(self):
+        """for deserializing the JSON file to objects """
+        self.reload()
