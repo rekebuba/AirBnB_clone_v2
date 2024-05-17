@@ -44,7 +44,7 @@ class BaseModel:
 
     def to_dict(self):
         """
-        returns a dictionary containing all key/values of __dict__ of datetime
+        returns a dictionary containing all key/values of __dict__
         """
         obj_dict = self.__dict__.copy()
         obj_dict['__class__'] = self.__class__.__name__
@@ -59,6 +59,15 @@ class BaseModel:
         from models import storage
         storage.delete(self)
 
+    def dict(self):
+        """
+        returns a dictionary containing all key/values of __dict__
+        """
+        obj_dict = self.__dict__.copy()
+        if '_sa_instance_state' in obj_dict.keys():
+            del obj_dict['_sa_instance_state']
+        return obj_dict
+    
     def __str__(self):
         """Return a string representation"""
-        return f"[{type(self).__name__}] ({self.id}) {self.__dict__}"
+        return f"[{type(self).__name__}] ({self.id}) {self.dict()}"

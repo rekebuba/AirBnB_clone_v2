@@ -26,6 +26,8 @@ class FileStorage:
 
     def new(self, obj):
         """sets in __objects the obj with key <obj class name>.id"""
+        if hasattr(obj, '_sa_instance_state'):
+            delattr(obj, '_sa_instance_state')
         self.__objects[f'{obj.__class__.__name__}.{obj.id}'] = obj
 
     def save(self):
