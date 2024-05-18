@@ -19,9 +19,9 @@ def state_list():
 def sort_by_name(list_of_dict):
     return sorted(list_of_dict, key=lambda x: x['name'])
 
-# @app.teardown_appcontext
-# def teardown_db():
-#     storage.close()
+@app.teardown_appcontext
+def teardown_db(exception):
+    storage.close()
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
