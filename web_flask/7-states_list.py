@@ -20,7 +20,7 @@ def sort_by_name(list_of_dict):
     return sorted(list_of_dict, key=lambda x: x['name'])
 
 @app.teardown_appcontext
-def teardown_db(exception):
+def teardown_db(exception=None):
     storage.close()
 
 if __name__ == '__main__':
