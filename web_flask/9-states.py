@@ -1,8 +1,5 @@
 #!/usr/bin/python3
 
-from gettext import find
-from operator import indexOf
-from traceback import print_tb
 from flask import Flask
 from flask import Flask, render_template
 from models import storage
