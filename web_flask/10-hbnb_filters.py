@@ -11,7 +11,7 @@ from models.state import State
 app = Flask(__name__)
 
 
-@app.route('/states/hbnb_filters', strict_slashes=False)
+@app.route('/hbnb_filters', strict_slashes=False)
 def find_id():
     states = []
     city_in_state = []
