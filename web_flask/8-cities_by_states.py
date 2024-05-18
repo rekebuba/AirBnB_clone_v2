@@ -1,6 +1,5 @@
 #!/usr/bin/python3
 
-from gettext import install
 from flask import Flask, render_template
 from models import storage
 from models import storage_type
