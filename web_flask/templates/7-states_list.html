@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>HBNB</title>
+</head>
+<body>
+    <H1>State</H1>
+    <UL>
+        {% for value in list_of_dict|sort_by_name %}
+            <LI>{{ value.id }}: <B>{{ value.name }}</B></LI>
+        {% endfor %}
+    </UL>
+</body>
+</html>
