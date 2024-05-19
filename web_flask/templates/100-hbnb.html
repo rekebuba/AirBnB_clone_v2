@@ -48,17 +48,23 @@
             <h1>Places</h1>
                 {% for place in places|sort_by_name %}
                     <article>
-                        <h2>{{ place.name }}</h2>
                         <div>
-                            <h2 class="price_tag">${{ place.price_by_night }}</h2>
+                            <div><h2 class="place_name">{{ place.name }}</h2></div>
+                            <div><h2 class="price_by_night">${{ place.price_by_night }}</h2></div>
                         </div>
                         <div class="information">
                             <div class="max_guest">{{ place.max_guest }} Guests</div>
                             <div class="number_rooms">{{ place.number_rooms }} Bedroom</div>
                             <div class="number_bathrooms">{{ place.number_bathrooms }} Bathroom</div>
                         </div>
-                        <div class="user"><b>owner</b>: Name of the owner</div>
-                        <div class="description"> {{ place.description }}</div>
+                        {% set break = false %}
+                        {% for user in user_in_place if not break %}
+                                {% if place.user_id == user.id %}
+                                    <div class="user"><b>owner</b>: {{ user.first_name }} {{ user.last_name }}</div>
+                                    {% set break = true %}
+                                {% endif %}
+                        {% endfor %}
+                        <div class="description"> {{ place.description | safe }}</div>
                     </article>
                 {% endfor %}
         </section>

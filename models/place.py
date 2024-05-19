@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """Place Class"""
 
+import re
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String, Integer, Float, ForeignKey
 from sqlalchemy.orm import relationship
@@ -93,3 +94,18 @@ class Place(BaseModel, Base):
                 if isinstance(obj, Amenity):
                     if obj.id not in self.amenity_ids:
                         self.amenity_ids.append(obj.id)
+
+        @property
+        def users(self):
+            '''returns the list of City instances with state_id
+                equals the current State.id
+                FileStorage relationship between State and City
+            '''
+            from models import storage
+            from models.user import User
+            related_users = []
+            users = storage.all(User)
+            for user in users.values():
+                if user.id == self.user_id:
+                    related_users.append(user)
+            return related_users

@@ -8,7 +8,8 @@
     width: 390px;
     padding: 20px;
     margin: 20px;
-    display: inline-block;
+    display: inline-grid;
+    
 }
 
 .places h1 {
@@ -16,25 +17,24 @@
     text-align: left;
 }
 
-.places h2 {
+.place_name {
     font-size: 30px;
-    text-align: center;
-}
-
-.price_tag {
-    position:relative;
-    top: -14px;
+    text-align: left;
+    margin-inline-end: 100px;
 }
 
 .price_by_night {
     color: #ff5a5f;
     border: 4px solid #ff5a5f;
-    border-radius: 100px;
-    min-width: 60px;
+    border-radius: 50px;
     height: 60px;
+    width: 60px;
     position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     float: right;
-    top: -80px;
+    margin-top: -111px;
 }
 
 .information {
