@@ -32,7 +32,7 @@ def find_id(id):
     city_in_state = []
 
     list_of_states = list(storage.all(State).values())
-    if storage_type == 'db':
+    if storage_type != 'db':
         for state in list_of_states:
             for city in state.cities:
                 city_in_state.append(city.__dict__)
