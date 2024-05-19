@@ -41,6 +41,8 @@ class DBStorage:
         all objects depending of the cls name
         if cls=None, query all types of objects
         """
+        if cls is not None and type(cls) == str:
+                cls = eval(cls)
         obj_dict = {}
         checker = Checker()
         classes_dict = checker.classes()
