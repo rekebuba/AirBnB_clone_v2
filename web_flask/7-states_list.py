@@ -12,7 +12,7 @@ app = Flask(__name__)
 def state_list():
     """display a HTML page with the states listed in alphabetical order"""
     result = []
-    list_of_states = list(storage.all(State).values())
+    list_of_states = list(storage.all("State").values())
 
     for lists in list_of_states:
         result.append(lists.__dict__)
