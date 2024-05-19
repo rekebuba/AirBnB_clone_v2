@@ -15,8 +15,8 @@ def cities_by_states():
     states = []
     city_in_state = []
 
-    list_of_objects = list(storage.all(State).values())
-    for state in list_of_objects:
+    list_of_states = list(storage.all(State).values())
+    for state in list_of_states:
         states.append(state.__dict__)
         if storage_type != 'db':
             for city in state.cities:

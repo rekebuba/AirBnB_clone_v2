@@ -15,8 +15,8 @@ app = Flask(__name__)
 def states():
     states = []
 
-    list_of_objects = list(storage.all(State).values())
-    for state in list_of_objects:
+    list_of_states = list(storage.all(State).values())
+    for state in list_of_states:
         states.append(state.__dict__)
 
     return render_template('9-states.html', states=states)
@@ -31,9 +31,9 @@ def find_id(id):
 
     city_in_state = []
 
-    list_of_objects = list(storage.all(State).values())
+    list_of_states = list(storage.all(State).values())
     if storage_type == 'db':
-        for state in list_of_objects:
+        for state in list_of_states:
             for city in state.cities:
                 city_in_state.append(city.__dict__)
     else:
