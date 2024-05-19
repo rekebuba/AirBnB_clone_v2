@@ -41,24 +41,18 @@ class DBStorage:
         all objects depending of the cls name
         if cls=None, query all types of objects
         """
-        if cls is not None and type(cls) == str:
-                cls = eval(cls)
-        obj_dict = {}
-        checker = Checker()
-        classes_dict = checker.classes()
-        if cls is None or cls == '':
-            for k, c in classes_dict.items():
-                if k != 'BaseModel':
-                    objs = self.__session.query(c).all()
-                    for obj in objs:
-                        key = obj.__class__.__name__ + '.' + obj.id
-                        obj_dict[key] = obj
+        if cls is None:
+            objs = self.__session.query(State).all()
+            objs.extend(self.__session.query(City).all())
+            objs.extend(self.__session.query(User).all())
+            objs.extend(self.__session.query(Place).all())
+            objs.extend(self.__session.query(Review).all())
+            objs.extend(self.__session.query(Amenity).all())
         else:
-            objs = self.__session.query(cls).all()
-            for obj in objs:
-                key = obj.__class__.__name__ + '.' + obj.id
-                obj_dict[key] = obj
-        return obj_dict
+            if type(cls) == str:
+                cls = eval(cls)
+            objs = self.__session.query(cls)
+        return {"{}.{}".format(type(o).__name__, o.id): o for o in objs}
 
     def new(self, obj):
         """
